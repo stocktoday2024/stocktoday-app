@@ -1,0 +1,168 @@
+/* ═══════════════════════════════════════════════════════════════
+   Ticker Tape — Single line 40px tall, CSS marquee, edge mask
+   ═══════════════════════════════════════════════════════════════ */
+
+.tickerContainer {
+  width: 100%;
+  height: 40px;
+  background: #0B1020;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  font-family: var(--font-heading), sans-serif;
+  z-index: 40;
+}
+
+/* Fixed left badge */
+.statusBadge {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  height: 100%;
+  border-right: 1px solid var(--border);
+  background: #0B1020;
+  z-index: 5;
+  white-space: nowrap;
+}
+
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pillOpen {
+  background: #042f2e; /* deep teal */
+  color: #2DD4BF;
+  border: 1px solid #115e59;
+}
+
+.pillClosed {
+  background: #4c0519; /* deep rose */
+  color: #FB7185;
+  border: 1px solid #881337;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.dotOpen {
+  background: #2DD4BF;
+  box-shadow: 0 0 6px rgba(45, 212, 191, 0.8);
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+.dotClosed {
+  background: #FB7185;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.9); }
+}
+
+.statusSubtitle {
+  font-size: 11px;
+  color: #CBD5E1;
+  font-weight: 500;
+}
+
+/* Marquee Area with edge mask fade */
+.marqueeWrapper {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  mask-image: linear-gradient(to right, transparent, black 32px, black calc(100% - 32px), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 32px, black calc(100% - 32px), transparent);
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  width: max-content;
+  white-space: nowrap;
+  animation: tickerLoop 110s linear infinite;
+  will-change: transform;
+}
+
+.tickerContainer:hover .track,
+.tickerContainer:focus-within .track {
+  animation-play-state: paused;
+}
+
+@keyframes tickerLoop {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none !important;
+  }
+}
+
+/* Each Item */
+.item {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.item:hover {
+  opacity: 0.85;
+}
+
+.itemName {
+  font-size: 11px;
+  font-weight: 700;
+  color: #E2E8F0;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-right: 8px; /* prevents running together */
+}
+
+.itemPrice {
+  font-size: 13px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-right: 8px;
+}
+
+.itemChangeUp {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--up);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.itemChangeDown {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--down);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}

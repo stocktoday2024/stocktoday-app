@@ -1,0 +1,334 @@
+/* ═══════════════════════════════════════════════════════════════
+   Stock Today — Design Tokens
+   "Midnight Bazaar" (dark, default) + "Spice Market" (light)
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Midnight Bazaar (dark, default) ─────────────────────── */
+  --bg:            #0B1020;
+  --panel:         #141A33;
+  --border:        #232B4D;
+  --text:          #E8ECFF;
+  --muted:         #A5B0D6;
+  --chip-border:   #3A4575;
+
+  /* Accent — saffron, the single re‑themable highlight */
+  --accent:        #FBBF24;
+  --accent-hover:  #F59E0B;
+
+  /* Semantic palette: each color has ONE job */
+  --teal:          #2DD4BF;  /* Sensex / English / main data */
+  --pink:          #F472B6;  /* Bank Nifty / Hindi / alerts  */
+  --violet:        #A78BFA;  /* secondary category           */
+
+  /* Sentiment tags */
+  --up:            #34D399;
+  --up-bg:         #134E4A;
+  --up-text:       #99F6E4;
+  --down:          #FB7185;
+  --down-bg:       #881337;
+  --down-text:     #FFE4E6;
+  --neutral-bg:    #232B4D;
+  --neutral-text:  #CBD5E1;
+
+  /* Surface layers */
+  --panel-hover:   #1C2440;
+  --overlay:       rgba(11, 16, 32, 0.8);
+
+  /* Focus / interaction */
+  --focus-ring:    var(--accent);
+  --link:          var(--teal);
+  --link-hover:    #5EEAD4;
+
+  /* Typography */
+  --font-heading:  "Sora", sans-serif;
+  --font-body:     "Noto Sans", "Noto Sans Gujarati", "Noto Sans Devanagari", sans-serif;
+
+  /* Shape */
+  --radius-sm:     8px;
+  --radius:        14px;
+  --radius-lg:     20px;
+  --radius-pill:   9999px;
+
+  /* Spacing */
+  --gap:           20px;
+  --page-px:       32px;
+  --panel-px:      16px;
+
+  /* Stripe colours (block-print top bar) */
+  --stripe-indigo: #6366F1;
+  --stripe-saffron:#FBBF24;
+  --stripe-teal:   #2DD4BF;
+  --stripe-pink:   #F472B6;
+
+  color-scheme: dark;
+}
+
+/* ── Spice Market (light theme) ─────────────────────────────── */
+[data-theme="light"] {
+  --bg:            #FFFBF2;
+  --panel:         #FFFFFF;
+  --border:        #E5E7EB;
+  --text:          #1B1740;
+  --muted:         #4B5563;
+  --chip-border:   #D1D5DB;
+
+  --accent:        #F59E0B;
+  --accent-hover:  #D97706;
+
+  --teal:          #0E7490;
+  --pink:          #BE185D;
+  --violet:        #6D28D9;
+
+  --up:            #059669;
+  --up-bg:         #D1FAE5;
+  --up-text:       #065F46;
+  --down:          #E11D48;
+  --down-bg:       #FEE2E2;
+  --down-text:     #991B1B;
+  --neutral-bg:    #F3F4F6;
+  --neutral-text:  #4B5563;
+
+  --panel-hover:   #F9FAFB;
+  --overlay:       rgba(255, 251, 242, 0.8);
+
+  --link:          #0E7490;
+  --link-hover:    #0891B2;
+
+  --stripe-indigo: #1B1740;
+  --stripe-saffron:#F59E0B;
+  --stripe-teal:   #0E7490;
+  --stripe-pink:   #BE185D;
+
+  color-scheme: light;
+}
+
+/* ── Native Form Controls Fix for Cross-Browser Dark/Light Theme ── */
+select,
+option,
+optgroup {
+  background-color: var(--panel);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+select:focus,
+select:focus-visible {
+  border-color: var(--accent);
+  outline: 2px solid var(--accent);
+}
+
+option {
+  background-color: var(--panel);
+  color: var(--text);
+  padding: 8px 12px;
+}
+
+option:checked,
+option:hover {
+  background-color: var(--panel-hover);
+  color: var(--accent);
+}
+
+/* ── Base resets & typography ───────────────────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Gujarati / Hindi: taller line-height */
+:lang(gu),
+:lang(hi) {
+  line-height: 1.7;
+}
+
+body {
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+h1 { font-size: 2rem; }        /* 32px */
+h2 { font-size: 1.5rem; }      /* 24px */
+h3 { font-size: 1.125rem; }    /* 18px */
+h4 { font-size: 1rem; }        /* 16px */
+
+@media (min-width: 1440px) {
+  h1 { font-size: 2.5rem; }    /* 40px on very large screens */
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+a:hover {
+  color: var(--link-hover);
+}
+
+/* ── Focus ring (WCAG) ──────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Reduced motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Scrollbar (dark) ───────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-pill);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--chip-border);
+}
+
+/* ── Selection ──────────────────────────────────────────────── */
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* ── Utility classes ────────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: 1184px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+  h1 { font-size: 1.75rem; }
+}
+
+/* ── Panel base ─────────────────────────────────────────────── */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--panel-px);
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.panel-interactive:hover {
+  transform: translateY(-2px);
+  border-color: var(--chip-border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Tag / Pill ─────────────────────────────────────────────── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.tag-up {
+  background: var(--up-bg);
+  color: var(--up-text);
+}
+
+.tag-down {
+  background: var(--down-bg);
+  color: var(--down-text);
+}
+
+.tag-neutral {
+  background: var(--neutral-bg);
+  color: var(--neutral-text);
+}
+
+.tag-breaking {
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 700;
+}
+
+.tag-category {
+  background: transparent;
+  border: 1px solid var(--chip-border);
+  color: var(--muted);
+}
+
+/* ── Block-print stripe ─────────────────────────────────────── */
+.stripe-bar {
+  display: flex;
+  height: 6px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.stripe-bar > span {
+  flex: 1 1 25%;
+  height: 6px;
+}
+
+/* ── Skeleton shimmer ───────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--border) 25%,
+    var(--panel-hover) 50%,
+    var(--border) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Price flash animation ──────────────────────────────────── */
+@keyframes flash-up {
+  0%   { background-color: rgba(52, 211, 153, 0.3); }
+  100% { background-color: transparent; }
+}
+@keyframes flash-down {
+  0%   { background-color: rgba(251, 113, 133, 0.3); }
+  100% { background-color: transparent; }
+}
+.flash-up   { animation: flash-up 600ms ease-out; }
+.flash-down { animation: flash-down 600ms ease-out; }

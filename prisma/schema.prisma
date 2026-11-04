@@ -1,0 +1,235 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Note: SQLite does not support enums. We use String fields with
+// TypeScript union types enforced at the application layer.
+// When switching to PostgreSQL for production, convert these back to enums.
+//
+// Role:          "ADMIN" | "EDITOR" | "READER"
+// Locale:        "EN" | "GU" | "HI"
+// Exchange:      "NSE" | "BSE"
+// ArticleStatus: "DRAFT" | "SUBMITTED" | "APPROVED" | "REJECTED"
+// Sentiment:     "BULLISH" | "BEARISH" | "NEUTRAL"
+
+// ─── Users ──────────────────────────────────────────────────────
+model User {
+  id               String    @id @default(uuid())
+  name             String?
+  email            String    @unique
+  passwordHash     String
+  role             String    @default("READER") // ADMIN | EDITOR | READER
+  preferredLang    String    @default("EN")     // EN | GU | HI
+  totpSecret       String?
+  totpVerified     Boolean   @default(false)
+  recoveryCodes    String    @default("[]")     // JSON array of hashed codes
+  disabledAt       DateTime?
+  createdAt        DateTime  @default(now())
+
+  articles         Article[]        @relation("Author")
+  approvals        Article[]        @relation("ApprovedBy")
+  versions         ArticleVersion[] @relation("VersionAuthor")
+  reviewComments   ReviewComment[]
+  watchlist        Watchlist[]
+  bookmarks        Bookmark[]
+  notifications    Notification[]
+  auditLogs        AuditLog[]       @relation("AuditUser")
+  sentInvitations  EditorInvitation[] @relation("InvitedBy")
+}
+
+// ─── Editor Invitations ─────────────────────────────────────────
+model EditorInvitation {
+  id         String    @id @default(uuid())
+  email      String
+  name       String?
+  token      String    @unique
+  invitedById String
+  usedAt     DateTime?
+  revokedAt  DateTime?
+  expiresAt  DateTime
+  createdAt  DateTime  @default(now())
+
+  invitedBy  User      @relation("InvitedBy", fields: [invitedById], references: [id])
+
+  @@index([token])
+  @@index([email])
+}
+
+// ─── Companies ──────────────────────────────────────────────────
+model Company {
+  id          String   @id @default(uuid())
+  ticker      String   @unique
+  exchange    String   // NSE | BSE
+  sector      String
+  name_en     String
+  name_gu     String
+  name_hi     String
+  logoUrl     String?
+
+  articles    ArticleCompany[]
+  watchlist   Watchlist[]
+}
+
+// ─── Articles ───────────────────────────────────────────────────
+model Article {
+  id               String   @id @default(uuid())
+  slug             String   @unique
+  status           String   @default("DRAFT")   // DRAFT | SUBMITTED | APPROVED | REJECTED
+  category         String
+  sentiment        String?                       // BULLISH | BEARISH | NEUTRAL
+  isBreaking       Boolean  @default(false)
+  isFeatured       Boolean  @default(false)
+  coverImageUrl    String?
+  sourceUrl        String?
+  publishAt        DateTime?
+  views            Int      @default(0)
+  deletedAt        DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  authorId         String
+  approvedById     String?
+  author           User     @relation("Author", fields: [authorId], references: [id])
+  approvedBy       User?    @relation("ApprovedBy", fields: [approvedById], references: [id])
+
+  // Multilingual content stored as JSON strings: { en: "...", gu: "...", hi: "..." }
+  title            String   @default("{}")
+  summary          String   @default("{}")
+  body             String   @default("{}")
+  simpleExplain    String   @default("{}")
+  keyTakeaways     String   @default("{}")
+
+  versions         ArticleVersion[]
+  companies        ArticleCompany[]
+  reviewComments   ReviewComment[]
+  bookmarks        Bookmark[]
+  auditLogs        AuditLog[]       @relation("AuditArticle")
+
+  @@index([status])
+  @@index([category])
+  @@index([publishAt])
+  @@index([authorId])
+}
+
+// ─── Article versions (append-only history) ─────────────────────
+model ArticleVersion {
+  id          String   @id @default(uuid())
+  articleId   String
+  authorId    String
+  data        String   // JSON snapshot of all multilingual fields + meta
+  createdAt   DateTime @default(now())
+
+  article     Article  @relation(fields: [articleId], references: [id])
+  author      User     @relation("VersionAuthor", fields: [authorId], references: [id])
+
+  @@index([articleId])
+}
+
+// ─── Article ↔ Company (many-to-many) ───────────────────────────
+model ArticleCompany {
+  articleId String
+  companyId String
+  article   Article @relation(fields: [articleId], references: [id])
+  company   Company @relation(fields: [companyId], references: [id])
+
+  @@id([articleId, companyId])
+}
+
+// ─── Review comments (rejection requires a comment) ─────────────
+model ReviewComment {
+  id        String   @id @default(uuid())
+  articleId String
+  authorId  String
+  content   String
+  createdAt DateTime @default(now())
+
+  article   Article  @relation(fields: [articleId], references: [id])
+  author    User     @relation(fields: [authorId], references: [id])
+
+  @@index([articleId])
+}
+
+// ─── Reader features ────────────────────────────────────────────
+model Watchlist {
+  id        String @id @default(uuid())
+  userId    String
+  companyId String
+  user      User    @relation(fields: [userId], references: [id])
+  company   Company @relation(fields: [companyId], references: [id])
+
+  @@unique([userId, companyId])
+}
+
+model Bookmark {
+  id        String  @id @default(uuid())
+  userId    String
+  articleId String
+  user      User    @relation(fields: [userId], references: [id])
+  article   Article @relation(fields: [articleId], references: [id])
+
+  @@unique([userId, articleId])
+}
+
+// ─── Newsletter subscribers ─────────────────────────────────────
+model Subscriber {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  language  String   @default("EN") // EN | GU | HI
+  frequency String   // "daily" | "weekly"
+  consentAt DateTime @default(now())
+}
+
+// ─── Notifications ──────────────────────────────────────────────
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String
+  payload   String   @default("{}")
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+// ─── IPO / Earnings calendar ────────────────────────────────────
+model Event {
+  id          String   @id @default(uuid())
+  type        String   // "IPO" | "EARNINGS"
+  title       String
+  date        DateTime
+  description String   @default("{}")
+}
+
+// ─── Glossary ───────────────────────────────────────────────────
+model GlossaryTerm {
+  id         String @id @default(uuid())
+  slug       String @unique
+  term       String @default("{}")
+  definition String @default("{}")
+}
+
+// ─── Audit log (append-only) ────────────────────────────────────
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String
+  action     String
+  entityType String?
+  entityId   String?
+  ipAddress  String?
+  meta       String?
+  createdAt  DateTime @default(now())
+
+  user       User     @relation("AuditUser", fields: [userId], references: [id])
+  article    Article? @relation("AuditArticle", fields: [entityId], references: [id])
+
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}

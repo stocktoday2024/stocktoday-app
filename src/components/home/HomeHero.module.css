@@ -1,0 +1,314 @@
+/* ═══════════════════════════════════════════════════════════════
+   Home Hero Section CSS Module — 7/5 Grid Layout
+   ═══════════════════════════════════════════════════════════════ */
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: 32px;
+  align-items: stretch;
+  width: 100%;
+}
+
+/* Left Column (7) */
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.kickerSpark {
+  font-size: 14px;
+}
+
+.heading {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+}
+
+.langEn {
+  color: var(--teal);
+}
+
+.langGu {
+  color: var(--accent);
+}
+
+.langHi {
+  color: var(--pink);
+}
+
+.supportingText {
+  font-size: 17px;
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 560px;
+}
+
+.buttonRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.digestBtn {
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #0B1020;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  box-shadow: 0 4px 14px rgba(251, 191, 36, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.digestBtn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.exploreIposBtn {
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.exploreIposBtn:hover {
+  background: var(--panel);
+  border-color: var(--chip-border);
+}
+
+.trustLine {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.trustDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--teal);
+}
+
+/* Right Column (5) - Market snapshot panel */
+.snapshotPanel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.snapshotHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.snapshotTitle {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.delayedTag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+/* Mood Bar */
+.moodSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.moodTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.moodLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.moodStatus {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--teal);
+}
+
+.moodBarTrack {
+  width: 100%;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: #19223c;
+  overflow: hidden;
+}
+
+.moodBarFill {
+  width: 72%;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--teal);
+}
+
+/* Index Rows: SENSEX, NIFTY 50, BANK NIFTY */
+.indexList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 6px;
+}
+
+.indexRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 6px 0;
+}
+
+.indexInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 110px;
+}
+
+.indexName {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.indexVal {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.indexChangeUp {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--up);
+  text-align: right;
+  min-width: 65px;
+}
+
+.indexChangeDown {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--down);
+  text-align: right;
+  min-width: 65px;
+}
+
+/* Mini sparkline in index row */
+.indexSvg {
+  width: 80px;
+  height: 32px;
+}
+
+/* Responsive: 1024px and 390px */
+@media (max-width: 1024px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .heading {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .heading {
+    font-size: 26px;
+  }
+  .supportingText {
+    font-size: 15px;
+  }
+  .buttonRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .indexRow {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .heading {
+    font-size: 24px;
+    line-height: 1.25;
+  }
+  .supportingText {
+    font-size: 14px;
+  }
+  .indexRow {
+    gap: 8px;
+  }
+  .indexInfo {
+    min-width: 80px;
+  }
+  .indexVal {
+    font-size: 16px;
+  }
+  .indexSvg {
+    width: 64px;
+    height: 26px;
+  }
+  .indexChangeUp,
+  .indexChangeDown {
+    font-size: 12px;
+    min-width: 50px;
+  }
+}

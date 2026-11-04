@@ -1,0 +1,219 @@
+.sectionWrapper {
+  width: 100%;
+  margin-top: 56px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.headerDot {
+  color: #FBBF24;
+  font-size: 14px;
+}
+
+.headerTitle {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text);
+  font-family: var(--font-heading);
+}
+
+.breakingGrid {
+  display: grid;
+  grid-template-columns: 8fr 4fr;
+  gap: 24px;
+  align-items: stretch;
+  width: 100%;
+}
+
+/* Left 8-col Breaking Card with 32px padding */
+.breakingCard {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  text-decoration: none;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.breakingCard:hover,
+.breakingCard:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--chip-border);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  outline: none;
+}
+
+.cardTopRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.breakingBadge {
+  background: #FBBF24;
+  color: #0B1020;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+}
+
+.categoryBadge {
+  background: #181F38;
+  border: 1px solid #2B355A;
+  color: #CBD5E1;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.sentimentBadge {
+  background: #064E3B;
+  color: #34D399;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.cardTitle {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.25;
+  margin-top: 14px;
+}
+
+.cardExcerpt {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.readMoreBtn {
+  color: var(--teal);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Right 4-col Side Stack: Live feed + Gujarat Pulse */
+.sideCol {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Live Feed Panel */
+.feedPanel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+.feedTitle {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+  font-family: var(--font-heading);
+}
+
+.feedList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.feedItem {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.feedTime {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  flex-shrink: 0;
+}
+
+.feedText {
+  color: var(--text);
+}
+
+/* Gujarat Pulse Panel (solid teal background) */
+.gujaratPanel {
+  background: #0E7490;
+  border-radius: 18px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.gujaratPanel:hover {
+  transform: translateY(-2px);
+  background: #0891B2;
+}
+
+.gujaratTitle {
+  font-size: 18px;
+  font-weight: 800;
+  color: #FFFFFF;
+  font-family: var(--font-heading);
+  line-height: 1.2;
+}
+
+.gujaratSub {
+  font-size: 13px;
+  color: #E0F2FE;
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .breakingGrid {
+    grid-template-columns: 1fr;
+  }
+}
