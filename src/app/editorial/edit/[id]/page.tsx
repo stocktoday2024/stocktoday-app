@@ -24,7 +24,6 @@ export default async function EditArticlePage({ params }: EditArticlePageProps) 
     notFound();
   }
 
-  // @ts-expect-error custom property from jwt session
   const userRole = session.user.role || "EDITOR";
 
   // Permission check: Editors can only edit their own stories unless ADMIN

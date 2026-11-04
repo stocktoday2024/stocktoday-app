@@ -148,7 +148,7 @@ export function ArticleDetailView({ article }: { article: ArticleDetailData }) {
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <BookmarkButton articleId={article.id} />
+          <BookmarkButton articleId={article.id} articleTitle={titleText} />
         </div>
       </div>
 

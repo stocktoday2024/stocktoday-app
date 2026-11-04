@@ -9,7 +9,6 @@ export default async function NewArticlePage() {
     redirect("/editorial/login");
   }
 
-  // @ts-expect-error custom property from jwt session
   const userRole = session.user.role || "EDITOR";
 
   return (

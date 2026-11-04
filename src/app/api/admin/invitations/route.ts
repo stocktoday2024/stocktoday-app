@@ -7,7 +7,6 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   const session = await auth();
-  // @ts-expect-error role check
   if (!session?.user || session.user.role !== "ADMIN") {
     return NextResponse.json({ error: "Forbidden: Admin access only" }, { status: 403 });
   }
@@ -28,7 +27,6 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const session = await auth();
-  // @ts-expect-error role check
   if (!session?.user || session.user.role !== "ADMIN") {
     return NextResponse.json({ error: "Forbidden: Admin access only" }, { status: 403 });
   }
@@ -55,18 +53,20 @@ export async function POST(req: Request) {
     const token = crypto.randomBytes(32).toString("hex");
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days expiration
 
+    const userId = session.user.id as string;
+
     const invitation = await prisma.editorInvitation.create({
       data: {
         email: cleanEmail,
         name: name ? String(name).trim() : null,
         token,
-        invitedById: session.user.id,
+        invitedById: userId,
         expiresAt,
       },
     });
 
     await recordAuditLog({
-      userId: session.user.id,
+      userId,
       action: "EDITOR_INVITE",
       meta: { invitedEmail: cleanEmail, invitationId: invitation.id },
     });
@@ -92,7 +92,6 @@ export async function POST(req: Request) {
 
 export async function DELETE(req: Request) {
   const session = await auth();
-  // @ts-expect-error role check
   if (!session?.user || session.user.role !== "ADMIN") {
     return NextResponse.json({ error: "Forbidden: Admin access only" }, { status: 403 });
   }
@@ -111,7 +110,7 @@ export async function DELETE(req: Request) {
     });
 
     await recordAuditLog({
-      userId: session.user.id,
+      userId: session.user.id as string,
       action: "EDITOR_INVITE_REVOKE",
       meta: { invitationId: id, email: updated.email },
     });

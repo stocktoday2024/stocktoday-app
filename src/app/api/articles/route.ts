@@ -278,7 +278,7 @@ export async function PUT(req: Request) {
     });
 
     // Audit log
-    let auditAction = "ARTICLE_UPDATED";
+    let auditAction: "ARTICLE_UPDATED" | "ARTICLE_PUBLISHED" | "ARTICLE_UNPUBLISHED" | "ARTICLE_RESTORED" = "ARTICLE_UPDATED";
     if (isNowPublishing) auditAction = "ARTICLE_PUBLISHED";
     if (isUnpublishing) auditAction = "ARTICLE_UNPUBLISHED";
     if (data.restore) auditAction = "ARTICLE_RESTORED";

@@ -15,9 +15,10 @@ interface CompanyData {
   name_hi: string;
   exchange: string;
   sector: string;
-  description_en: string | null;
-  description_gu: string | null;
-  description_hi: string | null;
+  description_en?: string | null;
+  description_gu?: string | null;
+  description_hi?: string | null;
+  logoUrl?: string | null;
 }
 
 interface ArticleData {
@@ -231,7 +232,7 @@ export function CompanyDetailClient({
             <span style={{ fontSize: "0.8rem", color: "var(--teal)", fontWeight: 600 }}>1D Session</span>
           </div>
           <div style={{ flex: 1, minHeight: 120, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <SparklineChart points={[live.low || live.price * 0.99, live.price * 0.995, live.high || live.price * 1.01, live.price]} isUp={isUp} />
+            <SparklineChart data={[live.low || live.price * 0.99, live.price * 0.995, live.high || live.price * 1.01, live.price]} isPositive={isUp} />
           </div>
         </div>
       </div>

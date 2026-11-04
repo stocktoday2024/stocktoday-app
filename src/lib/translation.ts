@@ -98,7 +98,7 @@ ${trimmed}`;
 
     // Split text into manageable chunks if very long or contains multiple paragraphs
     // to avoid URL length constraints while preserving HTML tags
-    const paragraphs = trimmed.split(/(\n\n+|<p>.*?<\/p>|<h3>.*?<\/h3>|<li>.*?<\/li>)/gs).filter(Boolean);
+    const paragraphs = trimmed.split(/(\n\n+|<p>[\s\S]*?<\/p>|<h3>[\s\S]*?<\/h3>|<li>[\s\S]*?<\/li>)/g).filter(Boolean);
 
     if (paragraphs.length <= 1) {
       const translated = await fetchGoogleTranslate(trimmed, sl, tl);

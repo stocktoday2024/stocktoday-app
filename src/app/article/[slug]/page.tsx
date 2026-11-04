@@ -33,8 +33,8 @@ export default async function ArticleDetailPage({ params }: ArticleDetailPagePro
     body: article.body,
     simpleExplain: article.simpleExplain,
     keyTakeaways: article.keyTakeaways,
-    authorName: article.author?.name,
-    approvedByName: article.approvedBy?.name,
+    authorName: article.author?.name || undefined,
+    approvedByName: article.approvedBy?.name || undefined,
   };
 
   return <ArticleDetailView article={serializedArticle} />;
