@@ -82,19 +82,16 @@ export function Footer() {
         }}
       >
         <div>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-            <div style={{ width: 32, height: 32, borderRadius: 6, overflow: "hidden", position: "relative" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
+            <div style={{ width: 140, height: 42, position: "relative" }}>
               <Image
                 src="/StockTodayLogo.jpeg"
                 alt="StockToday Logo"
-                width={32}
-                height={32}
-                style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                width={140}
+                height={42}
+                style={{ objectFit: "contain", width: "auto", height: "100%" }}
               />
             </div>
-            <span style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "1.1rem" }}>
-              Stock Today
-            </span>
           </div>
           <p style={{ color: "var(--muted)", fontSize: "0.85rem", lineHeight: 1.6 }}>
             {t.desc}

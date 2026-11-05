@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { NewspaperManager } from "@/components/newspaper/NewspaperManager";
@@ -200,22 +201,17 @@ export function AdminClientDashboard({ currentUser }: AdminDashboardProps) {
         }}
       >
         <div>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <span
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: 8,
-                background: "rgba(245, 158, 11, 0.2)",
-                color: "var(--accent)",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontWeight: 700,
-              }}
-            >
-              🛡️
-            </span>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <div style={{ width: 130, height: 40, position: "relative" }}>
+              <Image
+                src="/StockTodayLogo.jpeg"
+                alt="StockToday Logo"
+                width={130}
+                height={40}
+                style={{ objectFit: "contain", width: "auto", height: "100%" }}
+                priority
+              />
+            </div>
             <h1 style={{ fontSize: "1.6rem", fontWeight: 700, margin: 0, color: "var(--foreground)" }}>
               StockToday Admin Control System
             </h1>

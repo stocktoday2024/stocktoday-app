@@ -146,17 +146,17 @@ export function NewspaperView({
     <div className="container" style={{ paddingTop: 32, paddingBottom: 64 }}>
       {/* Newspaper Masthead */}
       <div style={{ textAlign: "center", marginBottom: 40, borderBottom: "2px solid var(--border)", paddingBottom: 28 }}>
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
-          <div style={{ width: 42, height: 42, borderRadius: 8, overflow: "hidden", position: "relative" }}>
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 16, marginBottom: 8 }}>
+          <div style={{ width: 140, height: 44, position: "relative" }}>
             <Image
               src="/StockTodayLogo.jpeg"
               alt="StockToday Logo"
-              width={42}
-              height={42}
-              style={{ objectFit: "cover", width: "100%", height: "100%" }}
+              width={140}
+              height={44}
+              style={{ objectFit: "contain", width: "auto", height: "100%" }}
             />
           </div>
-          <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "2.4rem", fontWeight: 800, letterSpacing: "-0.03em" }}>
+          <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "2.2rem", fontWeight: 800, letterSpacing: "-0.03em" }}>
             {t.title}
           </h1>
         </div>
@@ -201,8 +201,8 @@ export function NewspaperView({
             <div style={{ position: "absolute", top: 12, right: 12, background: "var(--accent)", color: "#000", fontWeight: 700, fontSize: "0.75rem", padding: "4px 8px", borderRadius: 4 }}>
               PDF
             </div>
-            <div style={{ width: 64, height: 64, borderRadius: 12, overflow: "hidden", marginBottom: 16 }}>
-              <Image src="/StockTodayLogo.jpeg" alt="Logo" width={64} height={64} style={{ objectFit: "cover" }} />
+            <div style={{ width: 140, height: 44, position: "relative", marginBottom: 16 }}>
+              <Image src="/StockTodayLogo.jpeg" alt="Logo" width={140} height={44} style={{ objectFit: "contain", width: "auto", height: "100%" }} />
             </div>
             <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: 8, color: "var(--text)" }}>
               {getLocalizedTitle(latestEdition.title)}
@@ -394,8 +394,8 @@ export function NewspaperView({
                   textAlign: "center",
                 }}
               >
-                <div style={{ width: 44, height: 44, borderRadius: 8, overflow: "hidden" }}>
-                  <Image src="/StockTodayLogo.jpeg" alt="Logo" width={44} height={44} style={{ objectFit: "cover" }} />
+                <div style={{ width: 120, height: 38, position: "relative" }}>
+                  <Image src="/StockTodayLogo.jpeg" alt="Logo" width={120} height={38} style={{ objectFit: "contain", width: "auto", height: "100%" }} />
                 </div>
                 <span
                   style={{

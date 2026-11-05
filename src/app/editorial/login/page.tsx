@@ -39,18 +39,18 @@ export default function EditorialLoginPage() {
     <div className="container" style={{ maxWidth: 440, paddingTop: 64, paddingBottom: 64 }}>
       <div className="panel" style={{ padding: 32, borderRadius: 16, border: "1px solid var(--border-color)", background: "var(--panel)" }}>
         <div style={{ textAlign: "center", marginBottom: 24 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-            <div style={{ width: 44, height: 44, borderRadius: 10, overflow: "hidden", position: "relative", boxShadow: "0 4px 12px rgba(0,0,0,0.2)" }}>
+          <div style={{ display: "inline-flex", flexDirection: "column", alignItems: "center", gap: 10, marginBottom: 12 }}>
+            <div style={{ width: 180, height: 58, position: "relative" }}>
               <Image
                 src="/StockTodayLogo.jpeg"
                 alt="StockToday Logo"
-                width={44}
-                height={44}
-                style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                width={180}
+                height={58}
+                style={{ objectFit: "contain", width: "auto", height: "100%" }}
                 priority
               />
             </div>
-            <span style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "1.3rem", color: "var(--foreground)" }}>
+            <span style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "1.1rem", color: "var(--foreground)" }}>
               StockToday Newsroom
             </span>
           </div>

@@ -104,18 +104,17 @@ export function Header() {
         <div className={styles.rowAInner}>
           {/* Logo */}
           <Link href="/" className={styles.brand} aria-label="StockToday Home">
-            <div className={styles.brandBadge} style={{ overflow: "hidden", position: "relative" }}>
+            <div style={{ position: "relative", width: 140, height: 44, display: "flex", alignItems: "center" }}>
               <Image
                 src="/StockTodayLogo.jpeg"
                 alt="StockToday Logo"
-                width={38}
-                height={38}
-                style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                width={140}
+                height={44}
+                style={{ objectFit: "contain", width: "auto", height: "100%" }}
                 priority
               />
             </div>
             <div className={styles.brandText}>
-              <span className={styles.brandTitle}>StockToday</span>
               <span className={styles.brandTagline}>{t.tagline}</span>
             </div>
           </Link>

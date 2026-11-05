@@ -52,20 +52,17 @@ export default function AdminLoginPage() {
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
-              width: 56,
-              height: 56,
-              borderRadius: "12px",
-              overflow: "hidden",
+              width: 180,
+              height: 58,
               marginBottom: 12,
-              boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
             }}
           >
             <Image
               src="/StockTodayLogo.jpeg"
               alt="StockToday Logo"
-              width={56}
-              height={56}
-              style={{ objectFit: "cover", width: "100%", height: "100%" }}
+              width={180}
+              height={58}
+              style={{ objectFit: "contain", width: "auto", height: "100%" }}
               priority
             />
           </div>
