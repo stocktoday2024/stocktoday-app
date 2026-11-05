@@ -240,23 +240,43 @@
 }
 
 @media (max-width: 640px) {
+  .sectionWrapper {
+    margin-top: 40px;
+  }
   .headerRow {
     flex-direction: column;
     align-items: flex-start;
     gap: 14px;
+    margin-bottom: 16px;
+  }
+  .heading {
+    font-size: 22px;
   }
   .tabList {
     width: 100%;
     overflow-x: auto;
     scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px;
   }
   .tabList::-webkit-scrollbar {
     display: none;
   }
+  .tabBtn {
+    min-height: 40px;
+    padding: 8px 16px;
+    white-space: nowrap;
+    font-size: 13px;
+  }
   .grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .card {
+    padding: 18px;
+    border-radius: 14px;
   }
   .priceValue {
-    font-size: 26px;
+    font-size: 24px;
   }
 }

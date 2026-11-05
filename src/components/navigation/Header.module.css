@@ -40,6 +40,14 @@
   flex-shrink: 0;
 }
 
+.brandLogoWrap {
+  position: relative;
+  width: 140px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+}
+
 .brandBadge {
   width: 38px;
   height: 38px;
@@ -117,6 +125,14 @@
 }
 
 /* Right Cluster */
+/* Desktop Actions Cluster */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
 .rightCluster {
   display: flex;
   align-items: center;
@@ -313,9 +329,16 @@
 }
 
 @media (max-width: 768px) {
+  .rowA {
+    height: 60px;
+  }
   .rowAInner,
   .rowBInner {
     padding: 0 16px;
+  }
+  .brandLogoWrap {
+    width: 120px;
+    height: 38px;
   }
   .brandTagline {
     display: none;
@@ -323,11 +346,14 @@
   .searchPill {
     display: none; /* collapsed to search icon button on mobile */
   }
-  .authOutlineBtn {
-    display: none;
+  .actions {
+    display: none; /* inside mobile drawer */
   }
-  .rightCluster {
-    gap: 8px;
+  .rowB {
+    height: 44px;
+  }
+  .navRow {
+    gap: 16px;
   }
   .rowBRight {
     display: none;
@@ -335,29 +361,25 @@
 }
 
 @media (max-width: 480px) {
+  .rowA {
+    height: 56px;
+  }
   .rowAInner,
   .rowBInner {
     padding: 0 12px;
   }
   .rowAInner {
-    gap: 4px;
+    gap: 8px;
+  }
+  .brandLogoWrap {
+    width: 105px;
+    height: 34px;
   }
   .brand {
     gap: 6px;
   }
-  .brandTitle {
-    font-size: 15px;
-  }
-  .brandBadge {
-    width: 28px;
-    height: 28px;
-    font-size: 12px;
-    border-radius: 6px;
-  }
-  .rightCluster {
-    gap: 4px;
-  }
-  .authAccentBtn {
-    display: none;
+  .navLink {
+    font-size: 13px;
+    padding: 0 2px;
   }
 }

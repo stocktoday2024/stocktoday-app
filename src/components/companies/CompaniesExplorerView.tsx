@@ -1047,8 +1047,8 @@ export function CompaniesExplorerView({ articles }: { articles: ArticleData[] })
         </div>
 
         {/* Responsive Table */}
-        <div style={{ overflowX: "auto", border: "1px solid var(--border)", borderRadius: "var(--radius-md)", background: "var(--panel)" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "0.88rem" }}>
+        <div style={{ overflowX: "auto", WebkitOverflowScrolling: "touch", border: "1px solid var(--border)", borderRadius: "var(--radius-md)", background: "var(--panel)" }}>
+          <table style={{ width: "100%", minWidth: 640, borderCollapse: "collapse", textAlign: "left", fontSize: "0.88rem" }}>
             <thead>
               <tr style={{ background: "rgba(255, 255, 255, 0.03)", borderBottom: "1px solid var(--border)", color: "var(--muted)" }}>
                 <th style={{ padding: "14px 16px", width: 50 }}>{t.colRank}</th>

@@ -279,6 +279,13 @@
   .buttonRow {
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
+  }
+  .digestBtn,
+  .exploreIposBtn {
+    justify-content: center;
+    min-height: 44px;
+    padding: 12px 20px;
   }
   .indexRow {
     gap: 10px;
@@ -286,8 +293,11 @@
 }
 
 @media (max-width: 480px) {
+  .heroGrid {
+    gap: 20px;
+  }
   .heading {
-    font-size: 24px;
+    font-size: 22px;
     line-height: 1.25;
   }
   .supportingText {
@@ -295,20 +305,21 @@
   }
   .indexRow {
     gap: 8px;
+    padding: 8px 0;
   }
   .indexInfo {
-    min-width: 80px;
+    min-width: 75px;
   }
   .indexVal {
-    font-size: 16px;
+    font-size: 15px;
   }
   .indexSvg {
-    width: 64px;
-    height: 26px;
+    width: 60px;
+    height: 24px;
   }
   .indexChangeUp,
   .indexChangeDown {
-    font-size: 12px;
-    min-width: 50px;
+    font-size: 11.5px;
+    min-width: 46px;
   }
 }

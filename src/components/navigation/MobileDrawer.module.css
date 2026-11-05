@@ -1,0 +1,217 @@
+/* ═══════════════════════════════════════════════════════════════
+   Mobile Navigation Drawer & Hamburger Menu
+   Only rendered or active on mobile viewports (<= 768px).
+   Desktop is untouched.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Mobile Action Trigger Buttons in Header */
+.mobileOnlyButtons {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobileOnlyButtons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  min-height: 42px;
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.iconBtn:active {
+  transform: scale(0.95);
+  background: var(--panel-hover);
+}
+
+/* Backdrop Overlay */
+.drawerOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 16, 32, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 100;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Slide-out Drawer Panel */
+.drawerPanel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 84vw;
+  max-width: 340px;
+  background: #0B1020;
+  border-left: 1px solid var(--border);
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+  animation: slideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+/* Drawer Header */
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  background: #080C18;
+}
+
+.drawerLogoWrap {
+  width: 120px;
+  height: 38px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.closeBtn {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.15s ease;
+}
+
+.closeBtn:active {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Quick Tools Bar inside Drawer (Theme + Lang + Saved) */
+.drawerTools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: rgba(20, 26, 51, 0.6);
+  border-bottom: 1px solid var(--border);
+  gap: 10px;
+}
+
+/* Navigation Links List */
+.drawerNavList {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px;
+  gap: 4px;
+  flex: 1;
+}
+
+.drawerNavLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  min-height: 48px;
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.drawerNavLink:active,
+.drawerNavLinkActive {
+  background: rgba(251, 191, 36, 0.12);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.drawerNavTeal {
+  color: var(--teal) !important;
+}
+
+.drawerNavBadge {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--pink);
+  color: #fff;
+  letter-spacing: 0.04em;
+}
+
+/* Drawer Footer */
+.drawerFooter {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  background: #080C18;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.editorLoginBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.editorLoginBtn:active {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.drawerFooterMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+  padding-top: 4px;
+}

@@ -5,10 +5,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "./Header.module.css";
+import drawerStyles from "./MobileDrawer.module.css";
 import { LanguageSwitch } from "./LanguageSwitch";
 import { ThemeToggle } from "./ThemeToggle";
 import { SavedStories } from "@/components/reader/SavedStories";
 import { useLanguage } from "@/context/LanguageContext";
+import { MobileDrawer } from "./MobileDrawer";
 
 const NAV_ITEMS_BY_LOCALE = {
   EN: [
@@ -77,10 +79,16 @@ export function Header() {
   const pathname = usePathname();
   const { locale } = useLanguage();
   const [savedCount, setSavedCount] = useState<number>(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = NAV_ITEMS_BY_LOCALE[locale] || NAV_ITEMS_BY_LOCALE.EN;
   const t = HEADER_TEXT[locale] || HEADER_TEXT.EN;
   const formattedDate = formatCurrentDate(locale);
+
+  // Close drawer on path change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     const updateCount = () => {
@@ -99,12 +107,12 @@ export function Header() {
 
   return (
     <div className={styles.headerWrapper}>
-      {/* ── ROW A (72px) ────────────────────────────────────────── */}
+      {/* ── ROW A (72px on desktop, 60px on mobile) ────────────────────────── */}
       <header className={styles.rowA}>
         <div className={styles.rowAInner}>
           {/* Logo */}
           <Link href="/" className={styles.brand} aria-label="StockToday Home">
-            <div style={{ position: "relative", width: 140, height: 44, display: "flex", alignItems: "center" }}>
+            <div className={styles.brandLogoWrap}>
               <Image
                 src="/StockTodayLogo.jpeg"
                 alt="StockToday Logo"
@@ -119,7 +127,7 @@ export function Header() {
             </div>
           </Link>
 
-          {/* Centered Search Pill */}
+          {/* Centered Search Pill (Desktop) */}
           <button
             type="button"
             className={styles.searchPill}
@@ -143,7 +151,7 @@ export function Header() {
             <kbd className={styles.searchKbd}>{t.searchKbd}</kbd>
           </button>
 
-          {/* Actions: Editor Login + Theme Toggle + Language Switch */}
+          {/* Desktop Actions: Editor Login + Theme Toggle + Language Switch */}
           <div className={styles.actions}>
             <Link
               href="/editorial/login"
@@ -172,10 +180,57 @@ export function Header() {
             <ThemeToggle />
             <LanguageSwitch />
           </div>
+
+          {/* Mobile Actions: Search Trigger + Hamburger Button (<= 768px only) */}
+          <div className={drawerStyles.mobileOnlyButtons}>
+            <button
+              type="button"
+              className={drawerStyles.iconBtn}
+              onClick={() => window.dispatchEvent(new CustomEvent("open-search"))}
+              aria-label="Search StockToday"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              className={drawerStyles.iconBtn}
+              onClick={() => setIsMobileMenuOpen(true)}
+              aria-label="Open navigation menu"
+              aria-expanded={isMobileMenuOpen}
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* ── ROW B (44px) ────────────────────────────────────────── */}
+      {/* ── ROW B (48px, slightly darker, sticky) ───────────────────── */}
       <nav className={styles.rowB} aria-label="Primary Navigation">
         <div className={styles.rowBInner}>
           {/* Navigation Links */}
@@ -234,6 +289,15 @@ export function Header() {
           </div>
         </div>
       </nav>
+
+      {/* Mobile Drawer */}
+      <MobileDrawer
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        navItems={navItems}
+        savedCount={savedCount}
+        formattedDate={formattedDate}
+      />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { SerializedNewspaperEdition } from "./NewspaperView";
 import { parseMultiLang } from "@/types";
 import { useLanguage } from "@/context/LanguageContext";
+import styles from "./NewspaperReader.module.css";
 
 declare global {
   interface Window {
@@ -169,56 +170,24 @@ export function NewspaperReader({
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100vh",
-        background: "#080c16",
-        color: "#fff",
-        overflow: "hidden",
-      }}
-    >
+    <div className={styles.readerContainer}>
       {/* Top Professional Reader Header */}
-      <header
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "10px 24px",
-          background: "#0d1322",
-          borderBottom: "1px solid rgba(255, 255, 255, 0.12)",
-          gap: 16,
-          zIndex: 20,
-        }}
-      >
+      <header className={styles.readerHeader}>
         {/* Left: Branding & Back Button */}
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+        <div className={styles.headerLeft}>
           <Link
             href="/newspaper"
-            style={{
-              color: "var(--accent)",
-              textDecoration: "none",
-              fontSize: "0.85rem",
-              fontWeight: 700,
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              background: "rgba(245, 158, 11, 0.12)",
-              padding: "6px 12px",
-              borderRadius: 6,
-              border: "1px solid rgba(245, 158, 11, 0.25)",
-            }}
+            className={styles.backBtn}
           >
             ← Archive
           </Link>
 
-          <div style={{ width: 110, height: 34, position: "relative" }}>
+          <div className={styles.headerLogo}>
             <Image
               src="/StockTodayLogo.jpeg"
               alt="StockToday Logo"
-              width={110}
-              height={34}
+              width={100}
+              height={32}
               style={{ objectFit: "contain", width: "auto", height: "100%" }}
               priority
             />
@@ -226,32 +195,27 @@ export function NewspaperReader({
 
           <span style={{ color: "rgba(255, 255, 255, 0.2)" }}>|</span>
 
-          <h2 style={{ fontSize: "0.95rem", fontWeight: 700, margin: 0, color: "#fff", maxWidth: 360, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+          <h2 className={styles.titleText}>
             {displayTitle}
           </h2>
         </div>
 
         {/* Center: Controls Toolbar */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <div className={styles.toolbarCluster}>
           {/* Thumbnails toggle */}
           <button
             onClick={() => setShowThumbnails((v) => !v)}
+            className={styles.toolBtn}
             style={{
               background: showThumbnails ? "rgba(245, 158, 11, 0.2)" : "rgba(255, 255, 255, 0.08)",
               color: showThumbnails ? "var(--accent)" : "#fff",
-              border: "1px solid rgba(255, 255, 255, 0.15)",
-              borderRadius: 6,
-              padding: "6px 12px",
-              fontSize: "0.82rem",
-              fontWeight: 600,
-              cursor: "pointer",
             }}
           >
             Pages
           </button>
 
-          {/* Page navigation */}
-          <div style={{ display: "flex", alignItems: "center", gap: 4, background: "rgba(255, 255, 255, 0.06)", padding: "4px 8px", borderRadius: 6 }}>
+          {/* Page navigation (desktop & tablet) */}
+          <div className={`${styles.toolGroup} ${styles.desktopOnlyTool}`}>
             <button
               disabled={currentPage <= 1}
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
@@ -268,7 +232,7 @@ export function NewspaperReader({
               ◀
             </button>
 
-            <span style={{ fontSize: "0.82rem", fontWeight: 600, minWidth: 80, textAlign: "center" }}>
+            <span style={{ fontSize: "0.82rem", fontWeight: 600, minWidth: 70, textAlign: "center" }}>
               {currentPage} / {totalPages}
             </span>
 
@@ -290,7 +254,7 @@ export function NewspaperReader({
           </div>
 
           {/* Zoom controls */}
-          <div style={{ display: "flex", alignItems: "center", gap: 4, background: "rgba(255, 255, 255, 0.06)", padding: "4px 8px", borderRadius: 6 }}>
+          <div className={styles.toolGroup}>
             <button
               onClick={() => setZoom((z) => Math.max(50, z - 15))}
               style={{ background: "none", color: "#fff", border: "none", cursor: "pointer", fontSize: "1rem", padding: "0 6px" }}
@@ -298,7 +262,7 @@ export function NewspaperReader({
             >
               −
             </button>
-            <span style={{ fontSize: "0.82rem", minWidth: 42, textAlign: "center" }}>{zoom}%</span>
+            <span style={{ fontSize: "0.82rem", minWidth: 40, textAlign: "center" }}>{zoom}%</span>
             <button
               onClick={() => setZoom((z) => Math.min(250, z + 15))}
               style={{ background: "none", color: "#fff", border: "none", cursor: "pointer", fontSize: "1rem", padding: "0 6px" }}
@@ -315,34 +279,18 @@ export function NewspaperReader({
             </button>
           </div>
 
-          {/* Fullscreen */}
+          {/* Fullscreen (desktop) */}
           <button
             onClick={toggleFullscreen}
-            style={{
-              background: "rgba(255, 255, 255, 0.08)",
-              color: "#fff",
-              border: "1px solid rgba(255, 255, 255, 0.15)",
-              borderRadius: 6,
-              padding: "6px 10px",
-              fontSize: "0.82rem",
-              cursor: "pointer",
-            }}
+            className={`${styles.toolBtn} ${styles.desktopOnlyTool}`}
           >
             {isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
           </button>
 
-          {/* Print */}
+          {/* Print (desktop) */}
           <button
             onClick={() => window.print()}
-            style={{
-              background: "rgba(255, 255, 255, 0.08)",
-              color: "#fff",
-              border: "1px solid rgba(255, 255, 255, 0.15)",
-              borderRadius: 6,
-              padding: "6px 10px",
-              fontSize: "0.82rem",
-              cursor: "pointer",
-            }}
+            className={`${styles.toolBtn} ${styles.desktopOnlyTool}`}
           >
             Print
           </button>
@@ -353,21 +301,9 @@ export function NewspaperReader({
           <a
             href={edition.pdfUrl}
             download={`${edition.slug}.pdf`}
-            style={{
-              background: "var(--accent)",
-              color: "#0B1020",
-              textDecoration: "none",
-              fontWeight: 700,
-              fontSize: "0.82rem",
-              padding: "7px 14px",
-              borderRadius: 6,
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 6,
-              boxShadow: "0 2px 8px rgba(245, 158, 11, 0.3)",
-            }}
+            className={styles.downloadPdfBtn}
           >
-            📥 Download PDF
+            <span>📥 Download</span> PDF
           </a>
         </div>
       </header>
@@ -376,23 +312,16 @@ export function NewspaperReader({
       <div style={{ flex: 1, display: "flex", position: "relative", overflow: "hidden" }}>
         {/* Left Thumbnails Strip */}
         {showThumbnails && (
-          <aside
-            style={{
-              width: 140,
-              background: "#0a0e1a",
-              borderRight: "1px solid rgba(255, 255, 255, 0.08)",
-              overflowY: "auto",
-              padding: "16px 8px",
-              display: "flex",
-              flexDirection: "column",
-              gap: 12,
-              zIndex: 10,
-            }}
-          >
+          <aside className={styles.sidebar}>
             {thumbnails.map((num) => (
               <button
                 key={num}
-                onClick={() => setCurrentPage(num)}
+                onClick={() => {
+                  setCurrentPage(num);
+                  if (typeof window !== "undefined" && window.innerWidth <= 600) {
+                    setShowThumbnails(false);
+                  }
+                }}
                 style={{
                   background: currentPage === num ? "rgba(245, 158, 11, 0.2)" : "rgba(255, 255, 255, 0.03)",
                   border: currentPage === num ? "2px solid var(--accent)" : "1px solid rgba(255, 255, 255, 0.1)",
@@ -430,17 +359,7 @@ export function NewspaperReader({
         )}
 
         {/* Center Canvas Viewport */}
-        <main
-          style={{
-            flex: 1,
-            overflow: "auto",
-            display: "flex",
-            alignItems: "flex-start",
-            justifyContent: "center",
-            padding: 24,
-            background: "#050811",
-          }}
-        >
+        <main className={styles.canvasViewport}>
           {loading && (
             <div style={{ marginTop: 80, textAlign: "center" }}>
               <div
@@ -500,11 +419,33 @@ export function NewspaperReader({
               boxShadow: "0 12px 48px rgba(0, 0, 0, 0.8)",
               borderRadius: 4,
               overflow: "hidden",
+              maxWidth: "100%",
             }}
           >
-            <canvas ref={canvasRef} />
+            <canvas ref={canvasRef} style={{ display: "block", maxWidth: "100%", height: "auto" }} />
           </div>
         </main>
+      </div>
+
+      {/* Floating Bottom Nav for Mobile Viewports (<= 600px) */}
+      <div className={styles.mobileFloatingNav}>
+        <button
+          className={styles.mobileNavBtn}
+          disabled={currentPage <= 1}
+          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+        >
+          ◀ Prev Page
+        </button>
+        <span className={styles.mobilePageIndicator}>
+          {currentPage} / {totalPages}
+        </span>
+        <button
+          className={styles.mobileNavBtn}
+          disabled={currentPage >= totalPages}
+          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+        >
+          Next Page ▶
+        </button>
       </div>
     </div>
   );

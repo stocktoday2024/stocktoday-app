@@ -215,5 +215,32 @@
 @media (max-width: 1024px) {
   .breakingGrid {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .sectionWrapper {
+    margin-top: 40px;
+  }
+  .headerTitle {
+    font-size: 20px;
+  }
+  .breakingCard {
+    padding: 20px;
+    border-radius: 14px;
+    gap: 16px;
+  }
+  .cardTitle {
+    font-size: 20px;
+    line-height: 1.3;
+  }
+  .cardExcerpt {
+    font-size: 14px;
+  }
+  .feedPanel,
+  .gujaratPanel {
+    padding: 18px;
+    border-radius: 14px;
   }
 }

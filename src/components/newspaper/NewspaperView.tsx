@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 import { parseMultiLang } from "@/types";
+import styles from "./NewspaperView.module.css";
 
 export interface SerializedNewspaperEdition {
   id: string;
@@ -145,9 +146,9 @@ export function NewspaperView({
   return (
     <div className="container" style={{ paddingTop: 32, paddingBottom: 64 }}>
       {/* Newspaper Masthead */}
-      <div style={{ textAlign: "center", marginBottom: 40, borderBottom: "2px solid var(--border)", paddingBottom: 28 }}>
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 16, marginBottom: 8 }}>
-          <div style={{ width: 140, height: 44, position: "relative" }}>
+      <div className={styles.masthead}>
+        <div className={styles.mastheadTitleRow}>
+          <div className={styles.mastheadLogo}>
             <Image
               src="/StockTodayLogo.jpeg"
               alt="StockToday Logo"
@@ -156,48 +157,20 @@ export function NewspaperView({
               style={{ objectFit: "contain", width: "auto", height: "100%" }}
             />
           </div>
-          <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "2.2rem", fontWeight: 800, letterSpacing: "-0.03em" }}>
+          <h1 className={styles.mastheadHeading}>
             {t.title}
           </h1>
         </div>
-        <p style={{ color: "var(--muted)", maxWidth: 650, margin: "0 auto", fontSize: "0.95rem", lineHeight: 1.5 }}>
+        <p className={styles.mastheadSubtitle}>
           {t.subtitle}
         </p>
       </div>
 
       {/* Featured / Latest Edition */}
       {latestEdition && (
-        <div
-          className="panel"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "minmax(280px, 340px) 1fr",
-            gap: 36,
-            padding: 32,
-            borderRadius: 16,
-            border: "1px solid rgba(245, 158, 11, 0.35)",
-            background: "linear-gradient(135deg, rgba(245, 158, 11, 0.04), rgba(11, 16, 32, 0.6))",
-            marginBottom: 48,
-          }}
-        >
+        <div className={`panel ${styles.featuredCard}`}>
           {/* Newspaper Cover / Preview */}
-          <div
-            style={{
-              borderRadius: 12,
-              overflow: "hidden",
-              border: "1px solid var(--border)",
-              boxShadow: "0 12px 32px rgba(0, 0, 0, 0.3)",
-              background: "#0d1322",
-              aspectRatio: "3/4",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 24,
-              textAlign: "center",
-              position: "relative",
-            }}
-          >
+          <div className={styles.featuredCover}>
             <div style={{ position: "absolute", top: 12, right: 12, background: "var(--accent)", color: "#000", fontWeight: 700, fontSize: "0.75rem", padding: "4px 8px", borderRadius: 4 }}>
               PDF
             </div>
@@ -216,7 +189,7 @@ export function NewspaperView({
           </div>
 
           {/* Details & Actions */}
-          <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div className={styles.featuredDetails}>
             <div style={{ display: "inline-block", background: "rgba(245, 158, 11, 0.15)", color: "var(--accent)", fontWeight: 700, fontSize: "0.75rem", padding: "4px 12px", borderRadius: 20, width: "fit-content", marginBottom: 16 }}>
               ✦ {t.latestBadge}
             </div>
@@ -229,7 +202,7 @@ export function NewspaperView({
               {latestEdition.description ? getLocalizedTitle(latestEdition.description) : t.subtitle}
             </p>
 
-            <div style={{ display: "flex", alignItems: "center", gap: 16, fontSize: "0.9rem", color: "var(--muted)", marginBottom: 28 }}>
+            <div className={styles.metaRow}>
               <span>📅 {formatDate(latestEdition.publishedAt)}</span>
               <span>📄 {latestEdition.pageCount} {t.pages}</span>
               <span>🌐 {latestEdition.language}</span>
@@ -238,22 +211,10 @@ export function NewspaperView({
               )}
             </div>
 
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 14 }}>
+            <div className={styles.actionRow}>
               <Link
                 href={`/newspaper/${latestEdition.slug}`}
-                style={{
-                  padding: "12px 24px",
-                  borderRadius: 8,
-                  background: "var(--accent)",
-                  color: "#0B1020",
-                  fontWeight: 700,
-                  fontSize: "0.95rem",
-                  textDecoration: "none",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  boxShadow: "0 4px 14px rgba(245, 158, 11, 0.3)",
-                }}
+                className={styles.readBtn}
               >
                 {t.readOnline}
               </Link>
@@ -263,19 +224,7 @@ export function NewspaperView({
                 download={`${latestEdition.slug}.pdf`}
                 target="_blank"
                 rel="noreferrer"
-                style={{
-                  padding: "12px 20px",
-                  borderRadius: 8,
-                  background: "var(--panel)",
-                  color: "var(--text)",
-                  border: "1px solid var(--border)",
-                  fontWeight: 600,
-                  fontSize: "0.95rem",
-                  textDecoration: "none",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                }}
+                className={styles.downloadBtn}
               >
                 📥 {t.downloadPdf}
               </a>
@@ -290,9 +239,9 @@ export function NewspaperView({
           {t.archiveTitle}
         </h3>
 
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 16, alignItems: "center", background: "var(--panel)", padding: "16px 20px", borderRadius: 12, border: "1px solid var(--border)" }}>
+        <div className={styles.filterBar}>
           {/* Search Input */}
-          <div style={{ flex: 1, minWidth: 240 }}>
+          <div className={styles.searchWrap}>
             <input
               type="text"
               placeholder={t.searchPlaceholder}
@@ -300,24 +249,26 @@ export function NewspaperView({
               onChange={(e) => setSearch(e.target.value)}
               style={{
                 width: "100%",
-                padding: "8px 14px",
+                padding: "10px 14px",
                 background: "var(--bg)",
                 border: "1px solid var(--border)",
                 borderRadius: 8,
                 color: "var(--text)",
                 fontSize: "0.9rem",
                 outline: "none",
+                minHeight: 44,
               }}
             />
           </div>
 
-          {/* Language filter */}
-          <div>
+          <div className={styles.selectWrap}>
+            {/* Language filter */}
             <select
               value={langFilter}
               onChange={(e) => setLangFilter(e.target.value)}
               style={{
                 padding: "8px 12px",
+                minHeight: 44,
                 background: "var(--bg)",
                 border: "1px solid var(--border)",
                 borderRadius: 8,
@@ -331,16 +282,15 @@ export function NewspaperView({
               <option value="HI">हिन्दी (HI)</option>
               <option value="MULTI">Multilingual</option>
             </select>
-          </div>
 
-          {/* Year filter */}
-          {years.length > 0 && (
-            <div>
+            {/* Year filter */}
+            {years.length > 0 && (
               <select
                 value={yearFilter}
                 onChange={(e) => setYearFilter(e.target.value)}
                 style={{
                   padding: "8px 12px",
+                  minHeight: 44,
                   background: "var(--bg)",
                   border: "1px solid var(--border)",
                   borderRadius: 8,
@@ -353,8 +303,8 @@ export function NewspaperView({
                   <option key={y} value={y}>{y}</option>
                 ))}
               </select>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 
