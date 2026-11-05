@@ -3,6 +3,7 @@
 import { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { NewspaperManager } from "@/components/newspaper/NewspaperManager";
 
 interface ArticleItem {
   id: string;
@@ -22,7 +23,7 @@ export function EditorialClientDashboard({ initialUser }: { initialUser: any }) 
   const router = useRouter();
   const [articles, setArticles] = useState<ArticleItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"ALL" | "APPROVED" | "DRAFT" | "TRASH">("ALL");
+  const [activeTab, setActiveTab] = useState<"ALL" | "APPROVED" | "DRAFT" | "TRASH" | "NEWSPAPERS">("ALL");
   const [search, setSearch] = useState("");
   const [isPending, startTransition] = useTransition();
 
@@ -242,6 +243,7 @@ export function EditorialClientDashboard({ initialUser }: { initialUser: any }) 
               { id: "APPROVED", label: "Published Live" },
               { id: "DRAFT", label: "Drafts" },
               { id: "TRASH", label: "Recently Deleted" },
+              { id: "NEWSPAPERS", label: "📰 E-Newspapers" },
             ] as const
           ).map((t) => (
             <button
@@ -280,15 +282,22 @@ export function EditorialClientDashboard({ initialUser }: { initialUser: any }) 
         />
       </div>
 
-      {/* Stories Table */}
-      <div
-        style={{
-          background: "var(--panel)",
-          border: "1px solid var(--border-color)",
-          borderRadius: 14,
-          overflow: "hidden",
-        }}
-      >
+      {/* Newspapers Management View */}
+      {activeTab === "NEWSPAPERS" ? (
+        <NewspaperManager
+          userRole={initialUser.role === "ADMIN" ? "ADMIN" : "EDITOR"}
+          userId={initialUser.id}
+        />
+      ) : (
+        /* Stories Table */
+        <div
+          style={{
+            background: "var(--panel)",
+            border: "1px solid var(--border-color)",
+            borderRadius: 14,
+            overflow: "hidden",
+          }}
+        >
         <div style={{ overflowX: "auto" }}>
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.85rem", textAlign: "left" }}>
             <thead>
@@ -483,6 +492,7 @@ export function EditorialClientDashboard({ initialUser }: { initialUser: any }) 
           </table>
         </div>
       </div>
+      )}
 
       {/* Emergency Removal Reason Modal */}
       {emergencyModalOpen && selectedArticle && (

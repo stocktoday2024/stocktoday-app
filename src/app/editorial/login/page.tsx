@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -38,8 +39,17 @@ export default function EditorialLoginPage() {
     <div className="container" style={{ maxWidth: 440, paddingTop: 64, paddingBottom: 64 }}>
       <div className="panel" style={{ padding: 32, borderRadius: 16, border: "1px solid var(--border-color)", background: "var(--panel)" }}>
         <div style={{ textAlign: "center", marginBottom: 24 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-            <span style={{ color: "var(--accent)", fontSize: "1.5rem" }}>◆</span>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+            <div style={{ width: 44, height: 44, borderRadius: 10, overflow: "hidden", position: "relative", boxShadow: "0 4px 12px rgba(0,0,0,0.2)" }}>
+              <Image
+                src="/StockTodayLogo.jpeg"
+                alt="StockToday Logo"
+                width={44}
+                height={44}
+                style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                priority
+              />
+            </div>
             <span style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "1.3rem", color: "var(--foreground)" }}>
               StockToday Newsroom
             </span>

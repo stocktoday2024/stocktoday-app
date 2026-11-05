@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -15,27 +16,27 @@ const NAV_ITEMS_BY_LOCALE = {
     { href: "/markets", label: "Markets" },
     { href: "/companies", label: "Companies" },
     { href: "/ipos", label: "IPOs", badge: "HOT" },
+    { href: "/newspaper", label: "Newspaper" },
     { href: "/gujarat-pulse", label: "Gujarat Pulse", isTeal: true },
     { href: "/glossary", label: "Learn" },
-    { href: "/ipos#calendar", label: "Calendar" },
   ],
   GU: [
     { href: "/", label: "હોમ" },
     { href: "/markets", label: "માર્કેટ્સ" },
     { href: "/companies", label: "કંપનીઓ" },
     { href: "/ipos", label: "IPO", badge: "હોટ" },
+    { href: "/newspaper", label: "અખબાર" },
     { href: "/gujarat-pulse", label: "ગુજરાત પલ્સ", isTeal: true },
     { href: "/glossary", label: "શીખો" },
-    { href: "/ipos#calendar", label: "કેલેન્ડર" },
   ],
   HI: [
     { href: "/", label: "होम" },
     { href: "/markets", label: "बाज़ार" },
     { href: "/companies", label: "कंपनियां" },
     { href: "/ipos", label: "IPO", badge: "हॉट" },
+    { href: "/newspaper", label: "अख़बार" },
     { href: "/gujarat-pulse", label: "गुजरात पल्स", isTeal: true },
     { href: "/glossary", label: "सीखें" },
-    { href: "/ipos#calendar", label: "कैलेंडर" },
   ],
 };
 
@@ -103,7 +104,16 @@ export function Header() {
         <div className={styles.rowAInner}>
           {/* Logo */}
           <Link href="/" className={styles.brand} aria-label="StockToday Home">
-            <div className={styles.brandBadge}>ST</div>
+            <div className={styles.brandBadge} style={{ overflow: "hidden", position: "relative" }}>
+              <Image
+                src="/StockTodayLogo.jpeg"
+                alt="StockToday Logo"
+                width={38}
+                height={38}
+                style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                priority
+              />
+            </div>
             <div className={styles.brandText}>
               <span className={styles.brandTitle}>StockToday</span>
               <span className={styles.brandTagline}>{t.tagline}</span>

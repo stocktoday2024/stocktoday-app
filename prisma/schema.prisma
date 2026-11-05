@@ -41,6 +41,7 @@ model User {
   notifications    Notification[]
   auditLogs        AuditLog[]       @relation("AuditUser")
   sentInvitations  EditorInvitation[] @relation("InvitedBy")
+  newspapers       NewspaperEdition[] @relation("NewspaperAuthor")
 }
 
 // ─── Editor Invitations ─────────────────────────────────────────
@@ -209,6 +210,35 @@ model Event {
 }
 
 // ─── Glossary ───────────────────────────────────────────────────
+
+// ─── Newspaper Editions ─────────────────────────────────────────
+model NewspaperEdition {
+  id            String    @id @default(uuid())
+  slug          String    @unique
+  title         String    // JSON: { en: "...", gu: "...", hi: "..." }
+  description   String?   // JSON: { en: "...", gu: "...", hi: "..." }
+  publishedAt   DateTime
+  language      String    @default("EN") // EN | GU | HI | MULTI
+  pageCount     Int       @default(1)
+  pdfUrl        String
+  coverImageUrl String?
+  fileSize      Int       @default(0)
+  isPublished   Boolean   @default(false)
+  downloads     Int       @default(0)
+  views         Int       @default(0)
+  deletedAt     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  authorId      String
+  author        User      @relation("NewspaperAuthor", fields: [authorId], references: [id])
+
+  @@index([publishedAt])
+  @@index([isPublished])
+  @@index([language])
+  @@index([authorId])
+}
+
 model GlossaryTerm {
   id         String @id @default(uuid())
   slug       String @unique

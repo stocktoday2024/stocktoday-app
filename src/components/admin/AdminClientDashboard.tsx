@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CustomSelect } from "@/components/ui/CustomSelect";
+import { NewspaperManager } from "@/components/newspaper/NewspaperManager";
 
 interface AdminDashboardProps {
   currentUser: any;
@@ -12,7 +13,7 @@ interface AdminDashboardProps {
 export function AdminClientDashboard({ currentUser }: AdminDashboardProps) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<
-    "OVERVIEW" | "ARTICLES" | "EDITORS" | "INVITATIONS" | "AUDIT"
+    "OVERVIEW" | "ARTICLES" | "NEWSPAPERS" | "EDITORS" | "INVITATIONS" | "AUDIT"
   >("OVERVIEW");
 
   // Metrics
@@ -288,6 +289,7 @@ export function AdminClientDashboard({ currentUser }: AdminDashboardProps) {
           [
             { id: "OVERVIEW", label: "Overview & Metrics" },
             { id: "ARTICLES", label: "Content Oversight" },
+            { id: "NEWSPAPERS", label: "📰 E-Newspapers" },
             { id: "EDITORS", label: "Editor Accounts" },
             { id: "INVITATIONS", label: "Editor Invitations" },
             { id: "AUDIT", label: "Immutable Audit Trail" },
@@ -667,6 +669,11 @@ export function AdminClientDashboard({ currentUser }: AdminDashboardProps) {
             </div>
           </div>
         </div>
+      )}
+
+      {/* TAB 2.5: NEWSPAPERS */}
+      {activeTab === "NEWSPAPERS" && (
+        <NewspaperManager userRole="ADMIN" userId={currentUser.id} />
       )}
 
       {/* TAB 3: EDITOR ACCOUNTS */}

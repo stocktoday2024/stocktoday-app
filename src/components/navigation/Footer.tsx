@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -10,6 +11,7 @@ const FOOTER_TEXT = {
     indices: "NSE & BSE Indices",
     companies: "Top Listed Companies",
     ipos: "Upcoming IPOs",
+    newspaper: "E-Newspaper Archive",
     gujarat: "Gujarat Pulse (Dholera / GIFT)",
     col2Title: "Knowledge & Resources",
     glossary: "Stock Market Glossary",
@@ -26,6 +28,7 @@ const FOOTER_TEXT = {
     indices: "NSE અને BSE ઇન્ડેક્સ",
     companies: "ટોચની લિસ્ટેડ કંપનીઓ",
     ipos: "આગામી IPO",
+    newspaper: "ઈ-અખબાર આર્કાઇવ",
     gujarat: "ગુજરાત પલ્સ (ધોલેરા / GIFT)",
     col2Title: "જ્ઞાન અને સંસાધનો",
     glossary: "શેરબજાર શબ્દકોશ",
@@ -42,6 +45,7 @@ const FOOTER_TEXT = {
     indices: "NSE और BSE सूचकांक",
     companies: "शीर्ष सूचीबद्ध कंपनियां",
     ipos: "आगामी IPO",
+    newspaper: "ई-अख़बार संग्रह",
     gujarat: "गुजरात पल्स (धोलेरा / GIFT)",
     col2Title: "ज्ञान और संसाधन",
     glossary: "शेयर बाज़ार शब्दावली",
@@ -78,8 +82,16 @@ export function Footer() {
         }}
       >
         <div>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-            <span style={{ color: "var(--accent)", fontSize: "1.25rem", fontWeight: 700 }}>◆</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+            <div style={{ width: 32, height: 32, borderRadius: 6, overflow: "hidden", position: "relative" }}>
+              <Image
+                src="/StockTodayLogo.jpeg"
+                alt="StockToday Logo"
+                width={32}
+                height={32}
+                style={{ objectFit: "cover", width: "100%", height: "100%" }}
+              />
+            </div>
             <span style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "1.1rem" }}>
               Stock Today
             </span>
@@ -95,6 +107,7 @@ export function Footer() {
             <li><Link href="/markets" style={{ color: "var(--muted)" }}>{t.indices}</Link></li>
             <li><Link href="/companies" style={{ color: "var(--muted)" }}>{t.companies}</Link></li>
             <li><Link href="/ipos" style={{ color: "var(--muted)" }}>{t.ipos}</Link></li>
+            <li><Link href="/newspaper" style={{ color: "var(--accent)" }}>{t.newspaper}</Link></li>
             <li><Link href="/gujarat-pulse" style={{ color: "var(--teal)" }}>{t.gujarat}</Link></li>
           </ul>
         </div>

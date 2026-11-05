@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -51,17 +52,22 @@ export default function AdminLoginPage() {
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
-              width: 44,
-              height: 44,
-              borderRadius: "50%",
-              background: "rgba(245, 158, 11, 0.15)",
-              color: "var(--accent)",
+              width: 56,
+              height: 56,
+              borderRadius: "12px",
+              overflow: "hidden",
               marginBottom: 12,
+              boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
             }}
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-            </svg>
+            <Image
+              src="/StockTodayLogo.jpeg"
+              alt="StockToday Logo"
+              width={56}
+              height={56}
+              style={{ objectFit: "cover", width: "100%", height: "100%" }}
+              priority
+            />
           </div>
           <h1 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--foreground)" }}>Administrator Portal</h1>
           <p style={{ color: "var(--muted)", fontSize: "0.85rem", marginTop: 4 }}>
