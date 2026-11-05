@@ -1,0 +1,69 @@
+.savedTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.savedTriggerActive {
+  background: rgba(251, 191, 36, 0.15);
+  color: var(--accent);
+}
+
+:global([data-theme="light"]) .savedTrigger {
+  background: #EDF2F7;
+  border-color: #CBD5E1;
+  color: #334155;
+}
+
+:global([data-theme="light"]) .savedTriggerActive {
+  background: #FEF3C7;
+  color: #B45309;
+  border-color: #FDE68A;
+}
+
+.savedIconOnly {
+  padding: 2px 6px;
+  border: none;
+  background: transparent;
+}
+
+.savedDrawerOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 16, 32, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 110;
+  display: flex;
+  justify-content: flex-end;
+}
+
+:global([data-theme="light"]) .savedDrawerOverlay {
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.savedDrawerPanel {
+  width: 100%;
+  max-width: 420px;
+  height: 100%;
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+:global([data-theme="light"]) .savedDrawerPanel {
+  background: #FFFFFF;
+  border-left-color: #E2E8F0;
+}

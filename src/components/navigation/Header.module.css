@@ -243,15 +243,21 @@
 }
 
 :global([data-theme="light"]) .navLink {
-  color: #E2E8F0;
+  color: #1E293B;
 }
 
 :global([data-theme="light"]) .navLink:hover {
-  color: #FFFFFF;
+  color: #0F172A;
 }
 
 :global([data-theme="light"]) .navLinkActive {
-  color: #FFFFFF;
+  color: #B45309;
+  border-bottom-color: #F59E0B;
+}
+
+:global([data-theme="light"]) .rowB {
+  background: #F8FAFC;
+  border-bottom-color: #E2E8F0;
 }
 
 .hotTag {

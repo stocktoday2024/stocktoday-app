@@ -114,7 +114,7 @@ export function MobileDrawer({
                 {item.badge ? (
                   <span className={styles.drawerNavBadge}>{item.badge}</span>
                 ) : (
-                  <span style={{ opacity: 0.35, fontSize: 13 }}>→</span>
+                  <span className={styles.drawerNavArrow}>→</span>
                 )}
               </Link>
             );

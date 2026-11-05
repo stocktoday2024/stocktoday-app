@@ -1,6 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════
    Mobile Navigation Drawer & Hamburger Menu
    Only rendered or active on mobile viewports (<= 768px).
+   Theme-adaptive: Midnight Bazaar (Dark) & Spice Market (Light)
    Desktop is untouched.
    ═══════════════════════════════════════════════════════════════ */
 
@@ -40,15 +41,30 @@
   background: var(--panel-hover);
 }
 
+:global([data-theme="light"]) .iconBtn {
+  background: #FFFFFF;
+  border-color: #E2E8F0;
+  color: #1E293B;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+:global([data-theme="light"]) .iconBtn:active {
+  background: #F1F5F9;
+}
+
 /* Backdrop Overlay */
 .drawerOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(11, 16, 32, 0.75);
+  background: rgba(11, 16, 32, 0.7);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   z-index: 100;
   animation: fadeIn 0.2s ease-out;
+}
+
+:global([data-theme="light"]) .drawerOverlay {
+  background: rgba(15, 23, 42, 0.45);
 }
 
 @keyframes fadeIn {
@@ -62,17 +78,23 @@
   top: 0;
   right: 0;
   bottom: 0;
-  width: 84vw;
+  width: 86vw;
   max-width: 340px;
-  background: #0B1020;
+  background: var(--bg);
   border-left: 1px solid var(--border);
   z-index: 101;
   display: flex;
   flex-direction: column;
-  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.4);
   animation: slideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+}
+
+:global([data-theme="light"]) .drawerPanel {
+  background: #FFFFFF;
+  border-left-color: #E2E8F0;
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.12);
 }
 
 @keyframes slideIn {
@@ -88,6 +110,11 @@
   padding: 16px 20px;
   border-bottom: 1px solid var(--border);
   background: #080C18;
+}
+
+:global([data-theme="light"]) .drawerHeader {
+  background: #F8FAFC;
+  border-bottom-color: #E2E8F0;
 }
 
 .drawerLogoWrap {
@@ -107,7 +134,7 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.08);
   border: 1px solid var(--border);
   color: var(--text);
   cursor: pointer;
@@ -116,7 +143,17 @@
 }
 
 .closeBtn:active {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="light"]) .closeBtn {
+  background: #EDF2F7;
+  border-color: #CBD5E1;
+  color: #1E293B;
+}
+
+:global([data-theme="light"]) .closeBtn:active {
+  background: #E2E8F0;
 }
 
 /* Quick Tools Bar inside Drawer (Theme + Lang + Saved) */
@@ -124,18 +161,23 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 20px;
+  padding: 12px 18px;
   background: rgba(20, 26, 51, 0.6);
   border-bottom: 1px solid var(--border);
   gap: 10px;
+}
+
+:global([data-theme="light"]) .drawerTools {
+  background: #F1F5F9;
+  border-bottom-color: #E2E8F0;
 }
 
 /* Navigation Links List */
 .drawerNavList {
   display: flex;
   flex-direction: column;
-  padding: 12px 16px;
-  gap: 4px;
+  padding: 14px 16px;
+  gap: 6px;
   flex: 1;
 }
 
@@ -154,6 +196,10 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+.drawerNavLink:hover {
+  background: var(--panel-hover);
+}
+
 .drawerNavLink:active,
 .drawerNavLinkActive {
   background: rgba(251, 191, 36, 0.12);
@@ -161,8 +207,37 @@
   font-weight: 700;
 }
 
+:global([data-theme="light"]) .drawerNavLink {
+  color: #1E293B; /* Crisp high-contrast slate on light bg */
+}
+
+:global([data-theme="light"]) .drawerNavLink:hover {
+  background: #F8FAFC;
+}
+
+:global([data-theme="light"]) .drawerNavLink:active,
+:global([data-theme="light"]) .drawerNavLinkActive {
+  background: #FEF3C7; /* warm saffron tint */
+  color: #B45309; /* deep amber-brown */
+}
+
+.drawerNavArrow {
+  opacity: 0.4;
+  font-size: 14px;
+  color: var(--text);
+}
+
+:global([data-theme="light"]) .drawerNavArrow {
+  color: #64748B;
+  opacity: 0.8;
+}
+
 .drawerNavTeal {
   color: var(--teal) !important;
+}
+
+:global([data-theme="light"]) .drawerNavTeal {
+  color: #0E7490 !important;
 }
 
 .drawerNavBadge {
@@ -175,14 +250,23 @@
   letter-spacing: 0.04em;
 }
 
+:global([data-theme="light"]) .drawerNavBadge {
+  background: #BE185D;
+}
+
 /* Drawer Footer */
 .drawerFooter {
-  padding: 16px 20px;
+  padding: 16px 18px;
   border-top: 1px solid var(--border);
   background: #080C18;
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+:global([data-theme="light"]) .drawerFooter {
+  background: #F8FAFC;
+  border-top-color: #E2E8F0;
 }
 
 .editorLoginBtn {
@@ -200,11 +284,22 @@
   font-size: 13.5px;
   font-weight: 600;
   text-decoration: none;
-  transition: background 0.15s ease;
+  transition: all 0.15s ease;
 }
 
 .editorLoginBtn:active {
   background: rgba(255, 255, 255, 0.15);
+}
+
+:global([data-theme="light"]) .editorLoginBtn {
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  color: #1E293B; /* Crisp, readable text */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+:global([data-theme="light"]) .editorLoginBtn:active {
+  background: #F1F5F9;
 }
 
 .drawerFooterMeta {
@@ -214,4 +309,8 @@
   font-size: 11px;
   color: var(--muted);
   padding-top: 4px;
+}
+
+:global([data-theme="light"]) .drawerFooterMeta {
+  color: #64748B;
 }

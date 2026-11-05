@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import styles from "./SavedStories.module.css";
 
 interface SavedStory {
   id: string;
@@ -38,23 +39,9 @@ export function SavedStories({ triggerOnlyIconCount, count }: SavedStoriesProps 
       <button
         onClick={() => setIsOpen(true)}
         aria-label="View saved bookmarks and watchlist"
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 5,
-          padding: triggerOnlyIconCount ? "2px 6px" : "6px 12px",
-          borderRadius: "var(--radius-sm)",
-          border: triggerOnlyIconCount ? "none" : "1px solid var(--border)",
-          background: triggerOnlyIconCount
-            ? "transparent"
-            : totalCount > 0
-            ? "rgba(251, 191, 36, 0.15)"
-            : "var(--panel)",
-          color: totalCount > 0 ? "var(--accent)" : "var(--muted)",
-          cursor: "pointer",
-          fontSize: "0.8rem",
-          fontWeight: 600,
-        }}
+        className={`${styles.savedTrigger} ${
+          triggerOnlyIconCount ? styles.savedIconOnly : ""
+        } ${totalCount > 0 ? styles.savedTriggerActive : ""}`}
       >
         <span style={{ fontSize: "14px" }}>★</span>
         <span>Saved {totalCount > 0 ? `(${totalCount})` : ""}</span>
@@ -63,34 +50,11 @@ export function SavedStories({ triggerOnlyIconCount, count }: SavedStoriesProps 
       {/* Slide-over Drawer Modal */}
       {isOpen && (
         <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(11, 16, 32, 0.75)",
-            backdropFilter: "blur(4px)",
-            zIndex: 110,
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
+          className={styles.savedDrawerOverlay}
           onClick={() => setIsOpen(false)}
         >
           <div
-            className="panel"
-            style={{
-              width: "100%",
-              maxWidth: 420,
-              height: "100%",
-              borderRadius: 0,
-              borderLeft: "1px solid var(--border)",
-              borderTop: "none",
-              borderRight: "none",
-              borderBottom: "none",
-              padding: 24,
-              display: "flex",
-              flexDirection: "column",
-              gap: 20,
-              overflowY: "auto",
-            }}
+            className={styles.savedDrawerPanel}
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid var(--border)", paddingBottom: 16 }}>

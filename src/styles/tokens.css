@@ -188,6 +188,24 @@ a:hover {
   outline-offset: 2px;
 }
 
+/* Light mode specific element overrides for crisp contrast */
+[data-theme="light"] .theme-toggle {
+  background: #EDF2F7 !important;
+  border-color: #CBD5E1 !important;
+  color: #1E293B !important;
+}
+
+[data-theme="light"] .tag-category {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+  color: #334155;
+}
+
+[data-theme="light"] .tag-neutral {
+  background: #F1F5F9;
+  color: #475569;
+}
+
 /* ── Reduced motion ─────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

@@ -47,3 +47,4 @@ export function checkRateLimit(
   record.count += 1;
   return { allowed: true, remaining: maxAttempts - record.count, resetAt: record.resetAt };
 }
+

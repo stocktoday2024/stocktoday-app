@@ -15,6 +15,11 @@
   z-index: 40;
 }
 
+:global([data-theme="light"]) .tickerContainer {
+  background: #F1F5F9;
+  border-bottom-color: #E2E8F0;
+}
+
 /* Fixed left badge */
 .statusBadge {
   flex-shrink: 0;
@@ -27,6 +32,11 @@
   background: #0B1020;
   z-index: 5;
   white-space: nowrap;
+}
+
+:global([data-theme="light"]) .statusBadge {
+  background: #F1F5F9;
+  border-right-color: #E2E8F0;
 }
 
 .statusPill {
@@ -142,11 +152,19 @@
   margin-right: 8px; /* prevents running together */
 }
 
+:global([data-theme="light"]) .itemName {
+  color: #475569;
+}
+
 .itemPrice {
   font-size: 13px;
   font-weight: 700;
   color: #FFFFFF;
   margin-right: 8px;
+}
+
+:global([data-theme="light"]) .itemPrice {
+  color: #0F172A;
 }
 
 .itemChangeUp {
