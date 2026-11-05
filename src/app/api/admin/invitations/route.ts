@@ -80,10 +80,13 @@ export async function POST(req: Request) {
       },
     });
 
+    const registrationUrl = `/editorial/register?token=${token}`;
+
     return NextResponse.json({
       success: true,
       invitation,
-      invitationLink: `/editorial/register?token=${token}`,
+      registrationUrl,
+      invitationLink: registrationUrl,
     });
   } catch (err: unknown) {
     return NextResponse.json({ error: (err as Error).message }, { status: 500 });

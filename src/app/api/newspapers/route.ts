@@ -88,22 +88,39 @@ export async function POST(req: NextRequest) {
     let fileSize = 0;
 
     if (file) {
-      if (file.type !== "application/pdf" && !file.name.endsWith(".pdf")) {
+      // 1. Enforce size limit (max 25MB)
+      const MAX_FILE_SIZE = 25 * 1024 * 1024;
+      if (file.size > MAX_FILE_SIZE) {
+        return NextResponse.json({ error: "File exceeds maximum permitted size of 25MB" }, { status: 400 });
+      }
+
+      // 2. MIME type & extension validation
+      if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
         return NextResponse.json({ error: "Only PDF files are permitted" }, { status: 400 });
+      }
+
+      // 3. Magic Number Validation: check %PDF- signature (0x25, 0x50, 0x44, 0x46)
+      const arrayBuffer = await file.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      const headerStr = buffer.slice(0, 5).toString("ascii");
+      if (!headerStr.startsWith("%PDF-")) {
+        return NextResponse.json({ error: "Invalid PDF file signature. Uploaded file is not a valid PDF." }, { status: 400 });
       }
 
       fileSize = file.size;
 
+      // 4. Safe randomized filename preventing path traversal
+      const safeRandomName = `edition_${Date.now()}_${Math.random().toString(36).substring(2, 9)}.pdf`;
+
       // Use Vercel Blob if token available, or base64 data URI fallback for local dev
       if (process.env.BLOB_READ_WRITE_TOKEN) {
-        const blob = await put(`newspapers/${Date.now()}-${file.name}`, file, {
+        const blob = await put(`newspapers/${safeRandomName}`, buffer, {
           access: "public",
+          contentType: "application/pdf",
         });
         pdfUrl = blob.url;
       } else {
         // Fallback: convert file to Base64 data URI for safe serverless storage in DB
-        const arrayBuffer = await file.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
         pdfUrl = `data:application/pdf;base64,${buffer.toString("base64")}`;
       }
     }

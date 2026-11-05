@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { checkRateLimit } from "@/lib/rateLimit";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -10,6 +11,12 @@ export async function POST(req: Request) {
     }
 
     const normalizedEmail = email.toLowerCase().trim();
+
+    // Rate limit newsletter subscription requests
+    const rateCheck = checkRateLimit(`newsletter:${normalizedEmail}`, 5, 10 * 60 * 1000);
+    if (!rateCheck.allowed) {
+      return NextResponse.json({ error: "Too many subscription requests. Please try again later." }, { status: 429 });
+    }
 
     // Upsert into Subscriber table
     const subscriber = await prisma.subscriber.upsert({

@@ -4,6 +4,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { parseMultiLang, getLocalised } from "@/types";
 import Link from "next/link";
 import { BookmarkButton } from "@/components/reader/BookmarkButton";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 interface ArticleDetailData {
   id: string;
@@ -195,7 +196,7 @@ export function ArticleDetailView({ article }: { article: ArticleDetailData }) {
           color: "var(--text)",
           marginBottom: 36,
         }}
-        dangerouslySetInnerHTML={{ __html: bodyText }}
+        dangerouslySetInnerHTML={{ __html: sanitizeHtml(bodyText) }}
       />
 
       {/* In Simple Terms Panel */}

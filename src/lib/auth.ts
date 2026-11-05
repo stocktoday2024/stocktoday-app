@@ -2,6 +2,8 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import { checkRateLimit } from "@/lib/rateLimit";
+import { recordAuditLog } from "@/lib/audit";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
@@ -22,6 +24,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
 
         const email = String(credentials.email).toLowerCase().trim();
+
+        // Rate limiting login attempts: maximum 5 attempts per 15 minutes per email
+        const rateCheck = checkRateLimit(`login:${email}`, 5, 15 * 60 * 1000);
+        if (!rateCheck.allowed) {
+          console.warn(`[SECURITY] Rate limit exceeded for login attempt: ${email}`);
+          return null;
+        }
+
         const user = await prisma.user.findUnique({
           where: { email },
         });
@@ -32,8 +42,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         const isValid = await bcrypt.compare(String(credentials.password), user.passwordHash);
         if (!isValid) {
+          await recordAuditLog({
+            userId: user.id,
+            action: "LOGIN_FAILURE",
+            meta: { email, reason: "Invalid password attempt" },
+          }).catch(() => {});
           return null;
         }
+
+        await recordAuditLog({
+          userId: user.id,
+          action: "LOGIN_SUCCESS",
+          meta: { email, role: user.role },
+        }).catch(() => {});
 
         return {
           id: user.id,

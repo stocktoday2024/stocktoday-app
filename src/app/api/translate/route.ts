@@ -1,12 +1,19 @@
 import { auth } from "@/lib/auth";
 import { translateContent, detectScriptLanguage, validateTargetScript } from "@/lib/translation";
 import { recordAuditLog } from "@/lib/audit";
+import { checkRateLimit } from "@/lib/rateLimit";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // Rate limit translation calls per user
+  const rateCheck = checkRateLimit(`translate:${session.user.id}`, 30, 60 * 1000);
+  if (!rateCheck.allowed) {
+    return NextResponse.json({ error: "Rate limit exceeded. Please wait a moment before requesting further translations." }, { status: 429 });
   }
 
   try {

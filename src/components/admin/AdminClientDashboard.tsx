@@ -116,8 +116,9 @@ export function AdminClientDashboard({ currentUser }: AdminDashboardProps) {
       if (!res.ok) {
         setAlert({ type: "error", text: data.error || "Failed to create invitation." });
       } else {
+        const link = data.registrationUrl || data.invitationLink;
         setAlert({ type: "success", text: "Invitation token generated successfully!" });
-        setNewInviteLink(data.registrationUrl);
+        setNewInviteLink(link);
         setInviteEmail("");
         setInviteName("");
         loadOverview();

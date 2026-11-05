@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { recordAuditLog } from "@/lib/audit";
 import { notifyAllAdmins } from "@/lib/notifications";
+import { checkRateLimit } from "@/lib/rateLimit";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -42,6 +43,12 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const { token, name, password } = await req.json();
+
+    // Rate limit registration attempts: max 5 per 15 minutes
+    const rateCheck = checkRateLimit(`register:${token || "anonymous"}`, 5, 15 * 60 * 1000);
+    if (!rateCheck.allowed) {
+      return NextResponse.json({ error: "Too many registration attempts. Please try again later." }, { status: 429 });
+    }
 
     if (!token || !password || password.length < 8) {
       return NextResponse.json({ error: "Password must be at least 8 characters" }, { status: 400 });
