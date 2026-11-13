@@ -1,15 +1,27 @@
 import { prisma } from "@/lib/prisma";
 import { MarketsView } from "@/components/markets/MarketsView";
 
+const INITIAL_LIMIT = 12;
+
 export default async function MarketsPage() {
-  const marketArticles = await prisma.article.findMany({
-    where: {
-      status: "APPROVED",
-      category: { in: ["Markets", "Banking", "IT", "Auto", "Commodities"] },
-    },
-    take: 8,
-    orderBy: { publishAt: "desc" },
-  });
+  const [marketArticles, totalCount] = await Promise.all([
+    prisma.article.findMany({
+      where: {
+        status: "APPROVED",
+        deletedAt: null,
+        category: { in: ["Markets", "Banking", "IT", "Auto", "Commodities", "IPO", "Economy", "Gujarat Pulse"] },
+      },
+      take: INITIAL_LIMIT,
+      orderBy: { publishAt: "desc" },
+    }),
+    prisma.article.count({
+      where: {
+        status: "APPROVED",
+        deletedAt: null,
+        category: { in: ["Markets", "Banking", "IT", "Auto", "Commodities", "IPO", "Economy", "Gujarat Pulse"] },
+      },
+    }),
+  ]);
 
   const serializedArticles = marketArticles.map((a) => ({
     id: a.id,
@@ -22,5 +34,14 @@ export default async function MarketsPage() {
     summary: a.summary,
   }));
 
-  return <MarketsView articles={serializedArticles} />;
+  const initialHasMore = totalCount > INITIAL_LIMIT;
+
+  return (
+    <MarketsView
+      initialArticles={serializedArticles}
+      initialTotalCount={totalCount}
+      initialHasMore={initialHasMore}
+      pageSize={INITIAL_LIMIT}
+    />
+  );
 }

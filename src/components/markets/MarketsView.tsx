@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { useQuotes } from "@/context/QuotesContext";
 import { ArticleCard } from "@/components/article/ArticleCard";
@@ -11,9 +12,16 @@ interface ArticleData {
   category: string;
   sentiment?: string | null;
   isBreaking?: boolean;
-  publishAt?: Date | null;
+  publishAt?: Date | string | null;
   title: string;
   summary: string;
+}
+
+interface MarketsViewProps {
+  initialArticles: ArticleData[];
+  initialTotalCount: number;
+  initialHasMore: boolean;
+  pageSize?: number;
 }
 
 const PAGE_TEXT = {
@@ -28,6 +36,11 @@ const PAGE_TEXT = {
     openStatus: "MARKET ACTIVE",
     closedStatus: "MARKET CLOSED",
     liveBadge: "LIVE AUTO-UPDATE",
+    loadMore: "Load More Stories",
+    loading: "Loading more stories...",
+    showing: "Showing",
+    of: "of",
+    allLoaded: "You have reached the end of market dispatches.",
   },
   GU: {
     kicker: "ભારતીય ઇક્વિટી બજારો અને મુખ્ય બેન્ચમાર્ક્સ",
@@ -40,6 +53,11 @@ const PAGE_TEXT = {
     openStatus: "બજાર ચાલુ",
     closedStatus: "બજાર બંધ",
     liveBadge: "લાઇવ ઓટો-અપડેટ",
+    loadMore: "વધુ વાર્તાઓ જુઓ",
+    loading: "વાર્તાઓ લોડ થઈ રહી છે...",
+    showing: "દર્શાવેલ",
+    of: "માંથી",
+    allLoaded: "તમે બધી બજાર વાર્તાઓ જોઈ લીધી છે.",
   },
   HI: {
     kicker: "भारतीय इक्विटी बाज़ार और प्रमुख बेंचमार्क",
@@ -52,13 +70,59 @@ const PAGE_TEXT = {
     openStatus: "बाज़ार चालू",
     closedStatus: "बाज़ार बंद",
     liveBadge: "लाइव ऑटो-अपडेट",
+    loadMore: "और समाचार लोड करें",
+    loading: "समाचार लोड हो रहे हैं...",
+    showing: "प्रदर्शित",
+    of: "कुल",
+    allLoaded: "आप सभी बाज़ार समाचार देख चुके हैं।",
   },
 };
 
-export function MarketsView({ articles }: { articles: ArticleData[] }) {
+export function MarketsView({
+  initialArticles,
+  initialTotalCount,
+  initialHasMore,
+  pageSize = 12,
+}: MarketsViewProps) {
   const { locale } = useLanguage();
   const { quotes, isMarketOpen } = useQuotes();
   const t = PAGE_TEXT[locale] || PAGE_TEXT.EN;
+
+  const [articles, setArticles] = useState<ArticleData[]>(initialArticles);
+  const [page, setPage] = useState<number>(1);
+  const [hasMore, setHasMore] = useState<boolean>(initialHasMore);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [totalCount, setTotalCount] = useState<number>(initialTotalCount);
+
+  const handleLoadMore = async () => {
+    if (loading || !hasMore) return;
+    setLoading(true);
+
+    try {
+      const nextPage = page + 1;
+      const res = await fetch(`/api/public-articles?page=${nextPage}&limit=${pageSize}`);
+      if (!res.ok) throw new Error("Failed to fetch more articles");
+
+      const data = await res.json();
+      const newArticles: ArticleData[] = data.articles || [];
+
+      setArticles((prev) => {
+        const existingIds = new Set(prev.map((a) => a.id));
+        const filteredNew = newArticles.filter((a) => !existingIds.has(a.id));
+        return [...prev, ...filteredNew];
+      });
+
+      setPage(nextPage);
+      setHasMore(data.pagination?.hasMore ?? false);
+      if (data.pagination?.totalCount) {
+        setTotalCount(data.pagination.totalCount);
+      }
+    } catch (err) {
+      console.error("Error loading more articles:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const sensex = quotes["SENSEX"] || { price: 77301.4, change: 383.55, changePct: 0.5, high: 77500, low: 76950 };
   const nifty = quotes["NIFTY 50"] || { price: 23960.6, change: 149.75, changePct: 0.63, high: 24050, low: 23820 };
@@ -78,90 +142,144 @@ export function MarketsView({ articles }: { articles: ArticleData[] }) {
 
   return (
     <div className="container" style={{ paddingTop: 32, paddingBottom: 64 }}>
-      {/* Header */}
-      <div style={{ marginBottom: 32 }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ color: "var(--teal)", fontSize: "1.2rem" }}>✦</span>
-            <h1 style={{ fontSize: "1.8rem" }}>{t.kicker}</h1>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      {/* Page Title & Realtime Badge */}
+      <div style={{ marginBottom: 28, display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12 }}>
+        <div>
+          <span
+            style={{
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              color: "var(--accent)",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              display: "block",
+              marginBottom: 4,
+            }}
+          >
+            {t.kicker}
+          </span>
+          <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", fontWeight: 800 }}>
+            {t.benchmarks}
+          </h1>
+          <p style={{ color: "var(--muted)", fontSize: "0.95rem", maxWidth: 680, marginTop: 6, lineHeight: 1.5 }}>
+            {t.desc}
+          </p>
+        </div>
+
+        {/* Live Market Status Pill */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "6px 14px",
+              borderRadius: "var(--radius-pill)",
+              background: isMarketOpen ? "rgba(34, 197, 94, 0.12)" : "rgba(239, 68, 68, 0.12)",
+              border: `1px solid ${isMarketOpen ? "rgba(34, 197, 94, 0.3)" : "rgba(239, 68, 68, 0.3)"}`,
+            }}
+          >
+            <span
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                background: isMarketOpen ? "var(--up)" : "var(--down)",
+                display: "inline-block",
+                boxShadow: isMarketOpen ? "0 0 8px var(--up)" : "none",
+              }}
+            />
             <span
               style={{
                 fontSize: "0.75rem",
-                padding: "4px 10px",
-                borderRadius: "var(--radius-pill)",
-                background: isMarketOpen ? "rgba(52, 211, 153, 0.15)" : "rgba(165, 176, 214, 0.15)",
-                color: isMarketOpen ? "var(--up)" : "var(--muted)",
                 fontWeight: 700,
+                color: isMarketOpen ? "var(--up)" : "var(--down)",
+                letterSpacing: "0.05em",
               }}
             >
               {isMarketOpen ? t.openStatus : t.closedStatus}
             </span>
-            <span
-              style={{
-                fontSize: "0.75rem",
-                padding: "4px 10px",
-                borderRadius: "var(--radius-pill)",
-                background: "rgba(45, 212, 191, 0.15)",
-                color: "var(--teal)",
-                fontWeight: 700,
-              }}
-            >
-              ● {t.liveBadge}
-            </span>
           </div>
+
+          <span
+            style={{
+              fontSize: "0.72rem",
+              padding: "6px 12px",
+              borderRadius: "var(--radius-pill)",
+              background: "rgba(255, 255, 255, 0.05)",
+              border: "1px solid var(--border)",
+              color: "var(--muted)",
+              fontWeight: 600,
+            }}
+          >
+            ⚡ {t.liveBadge}
+          </span>
         </div>
-        <p style={{ color: "var(--muted)", fontSize: "0.9rem", marginTop: 4 }}>
-          {t.desc}
-        </p>
       </div>
 
-      {/* Indices Grid with Live Auto-Updated Prices */}
+      {/* Benchmark Indices Grid */}
       <div
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
           gap: 16,
-          marginBottom: 40,
+          marginBottom: 32,
         }}
       >
         {indices.map((item) => {
-          const isUp = item.quote.changePct >= 0;
+          const isUp = (item.quote.change || 0) >= 0;
           return (
-            <div key={item.name} className="panel panel-interactive" style={{ padding: 20 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                <span style={{ fontSize: "0.85rem", color: "var(--muted)", fontWeight: 600 }}>
+            <div
+              key={item.name}
+              className="panel"
+              style={{
+                padding: "16px 20px",
+                display: "flex",
+                flexDirection: "column",
+                gap: 8,
+                borderLeft: `3px solid ${isUp ? "var(--up)" : "var(--down)"}`,
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text)" }}>
                   {item.name}
                 </span>
                 <span
                   style={{
-                    fontSize: "0.65rem",
+                    fontSize: "0.68rem",
                     padding: "2px 6px",
-                    borderRadius: "var(--radius-sm)",
-                    background: "var(--bg)",
-                    border: "1px solid var(--border)",
-                    color: "var(--teal)",
-                    fontWeight: 700,
+                    borderRadius: 4,
+                    background: "rgba(255,255,255,0.06)",
+                    color: "var(--muted)",
+                    fontWeight: 600,
                   }}
                 >
                   {item.exchange}
                 </span>
               </div>
 
-              <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 8 }}>
-                <span style={{ fontSize: "1.45rem", fontWeight: 700, fontFamily: "var(--font-heading)" }}>
-                  {item.quote.price ? item.quote.price.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "—"}
+              <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+                <span
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "1.45rem",
+                    fontWeight: 700,
+                    color: "var(--text)",
+                  }}
+                >
+                  ₹{item.quote.price?.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </span>
                 <span
                   style={{
                     fontSize: "0.85rem",
                     fontWeight: 700,
                     color: isUp ? "var(--up)" : "var(--down)",
+                    fontFamily: "var(--font-mono)",
                   }}
                 >
-                  {isUp ? "▲ +" : "▼ "}
-                  {item.quote.changePct.toFixed(2)}%
+                  {isUp ? "+" : ""}
+                  {item.quote.change?.toFixed(2)} ({isUp ? "+" : ""}
+                  {item.quote.changePct?.toFixed(2)}%)
                 </span>
               </div>
 
@@ -169,14 +287,14 @@ export function MarketsView({ articles }: { articles: ArticleData[] }) {
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  fontSize: "0.75rem",
+                  fontSize: "0.72rem",
                   color: "var(--muted)",
+                  paddingTop: 4,
                   borderTop: "1px solid var(--border)",
-                  paddingTop: 8,
                 }}
               >
                 <span>{t.dayRange}</span>
-                <span style={{ color: "var(--text)", fontWeight: 600 }}>
+                <span style={{ fontFamily: "var(--font-mono)" }}>
                   {item.quote.low?.toFixed(0)} – {item.quote.high?.toFixed(0)}
                 </span>
               </div>
@@ -203,11 +321,18 @@ export function MarketsView({ articles }: { articles: ArticleData[] }) {
         </Link>
       </div>
 
-      {/* Dispatches / Articles */}
+      {/* Dispatches / Articles Header */}
       <div>
-        <h2 style={{ fontSize: "1.4rem", fontWeight: 700, marginBottom: 20 }}>
-          {t.stories}
-        </h2>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: 8, marginBottom: 20 }}>
+          <h2 style={{ fontSize: "1.4rem", fontWeight: 700 }}>
+            {t.stories}
+          </h2>
+          <span style={{ fontSize: "0.85rem", color: "var(--muted)" }}>
+            {t.showing} {articles.length} {t.of} {totalCount}
+          </span>
+        </div>
+
+        {/* Articles Grid */}
         <div
           style={{
             display: "grid",
@@ -215,12 +340,46 @@ export function MarketsView({ articles }: { articles: ArticleData[] }) {
             gap: 20,
           }}
         >
-          {articles.map((article) => (
-            <ArticleCard key={article.id} article={article} locale={locale} />
-          ))}
+          {articles.map((article) => {
+            const normalizedArticle = {
+              ...article,
+              publishAt: article.publishAt ? new Date(article.publishAt) : null,
+            };
+            return (
+              <ArticleCard key={article.id} article={normalizedArticle} locale={locale} />
+            );
+          })}
+        </div>
+
+        {/* Pagination / Load More Controls */}
+        <div style={{ marginTop: 40, textAlign: "center" }}>
+          {hasMore ? (
+            <button
+              onClick={handleLoadMore}
+              disabled={loading}
+              style={{
+                padding: "12px 32px",
+                borderRadius: "var(--radius-pill)",
+                background: "var(--accent)",
+                color: "#0B1020",
+                fontSize: "0.95rem",
+                fontWeight: 700,
+                border: "none",
+                cursor: loading ? "wait" : "pointer",
+                boxShadow: "0 4px 12px rgba(245, 158, 11, 0.25)",
+                transition: "transform 0.15s, opacity 0.15s",
+                opacity: loading ? 0.7 : 1,
+              }}
+            >
+              {loading ? t.loading : t.loadMore}
+            </button>
+          ) : (
+            <p style={{ color: "var(--muted)", fontSize: "0.85rem", fontStyle: "italic" }}>
+              ✓ {t.allLoaded}
+            </p>
+          )}
         </div>
       </div>
     </div>
   );
 }
-
